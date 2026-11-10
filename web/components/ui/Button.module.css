@@ -1,0 +1,163 @@
+.button {
+  --btn-height: 2.75rem;
+  --btn-padding: 1.5em;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  height: var(--btn-height);
+  padding: 0 var(--btn-padding);
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--c-text);
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease,
+    opacity 0.18s ease;
+}
+
+.button:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+/* —— 尺寸 —— */
+.sm {
+  --btn-height: 2.125rem;
+  --btn-padding: 1.05em;
+
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+}
+
+.md {
+  --btn-height: 2.75rem;
+  --btn-padding: 1.5em;
+}
+
+.lg {
+  --btn-height: 3.25rem;
+  --btn-padding: 2em;
+
+  font-size: 1.0625rem;
+  letter-spacing: 0.2em;
+}
+
+.fullWidth {
+  display: flex;
+  width: 100%;
+}
+
+/* —— 变体：primary 金底深字 —— */
+.primary {
+  border-color: color-mix(in srgb, var(--c-gold) 72%, var(--c-line));
+  background: linear-gradient(
+    180deg,
+    var(--c-gold-bright) 0%,
+    var(--c-gold) 100%
+  );
+  color: var(--c-bg);
+  font-weight: 600;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--c-text) 55%, transparent),
+    0 10px 28px -18px color-mix(in srgb, var(--c-gold) 80%, transparent);
+}
+
+.primary:not(:disabled):hover {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c-gold-bright) 82%, var(--c-text)) 0%,
+    var(--c-gold-bright) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--c-text) 70%, transparent),
+    0 12px 32px -16px color-mix(in srgb, var(--c-gold) 85%, transparent);
+}
+
+.primary:focus-visible {
+  outline-color: var(--c-gold-bright);
+  outline-offset: 4px;
+}
+
+/* —— 变体：ghost 描边 —— */
+.ghost {
+  border-color: var(--c-line-2);
+  background: color-mix(in srgb, var(--c-surface) 55%, transparent);
+  color: var(--c-text-2);
+}
+
+.ghost:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--c-gold) 60%, var(--c-line-2));
+  color: var(--c-gold-bright);
+  background: color-mix(in srgb, var(--c-surface-2) 80%, transparent);
+}
+
+/* —— 变体：seal 朱砂 —— */
+.seal {
+  border-color: color-mix(in srgb, var(--c-cinnabar) 62%, var(--c-line));
+  background: color-mix(in srgb, var(--c-cinnabar) 82%, var(--c-bg));
+  color: var(--c-text);
+  box-shadow: 0 10px 26px -20px color-mix(in srgb, var(--c-cinnabar) 90%, transparent);
+}
+
+.seal:not(:disabled):hover {
+  background: var(--c-cinnabar);
+  box-shadow: 0 12px 30px -16px color-mix(in srgb, var(--c-cinnabar) 95%, transparent);
+}
+
+/* —— 变体：text 纯文字 —— */
+.text {
+  --btn-padding: 0.35em;
+
+  height: auto;
+  color: var(--c-text-3);
+  letter-spacing: 0.14em;
+}
+
+.text:not(:disabled):hover {
+  color: var(--c-gold-bright);
+}
+
+.text:focus-visible {
+  outline-offset: 2px;
+}
+
+.loading {
+  cursor: progress;
+}
+
+.spinner {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button:not(:disabled):active {
+    transition: none;
+    transform: none;
+  }
+}

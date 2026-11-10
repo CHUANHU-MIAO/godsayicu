@@ -1,0 +1,42 @@
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  color: var(--c-text-3);
+  font-size: 0.8125rem;
+  letter-spacing: 0.22em;
+  line-height: 1;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1 1 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--c-line-2) 18%,
+    var(--c-line) 82%,
+    transparent 100%
+  );
+}
+
+.divider::after {
+  transform: scaleX(-1);
+}
+
+.plain {
+  gap: 0;
+}
+
+.plain::after {
+  display: none;
+}
+
+.text {
+  flex: none;
+  white-space: nowrap;
+  color: var(--c-text-3);
+}

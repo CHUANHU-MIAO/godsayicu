@@ -1,0 +1,255 @@
+.page {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 30px;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  color: var(--c-text-3);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back:hover {
+  color: var(--c-gold);
+}
+
+.head {
+  margin-bottom: 28px;
+}
+
+.title {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 3.4vw, 2.25rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--c-gold-bright);
+}
+
+.sub {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--c-text-2);
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  border: 1px solid var(--c-line);
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(212, 180, 120, 0.07), transparent 70%),
+    linear-gradient(180deg, rgba(23, 22, 20, 0.9), rgba(15, 15, 14, 0.85));
+}
+
+/* —— 左：铜钱 —— */
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 32px 28px 36px;
+  border-right: 1px solid var(--c-line);
+}
+
+.result {
+  margin: 0;
+  min-height: 1.6em;
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  color: var(--c-text-2);
+}
+
+.result b {
+  font-weight: 500;
+  color: var(--c-gold-bright);
+}
+
+.idle {
+  color: var(--c-text-3);
+  letter-spacing: 0.18em;
+}
+
+.error {
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid rgba(212, 85, 60, 0.45);
+  background: rgba(212, 85, 60, 0.08);
+  color: #e58e7c;
+  font-size: 0.8125rem;
+}
+
+.casting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  color: var(--c-cinnabar);
+}
+
+.bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.bars i {
+  width: 2px;
+  height: 100%;
+  background: var(--c-cinnabar);
+  animation: barPulse 0.9s ease-in-out infinite;
+}
+
+.bars i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.bars i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes barPulse {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+/* —— 右：卦象进度 —— */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px 26px 24px;
+}
+
+.rightHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.rightTitle {
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--c-text);
+}
+
+.count {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--c-text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 6.5rem;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 3px;
+  transition: background-color 0.25s ease;
+}
+
+.row[data-active='true'] {
+  background: rgba(122, 74, 52, 0.42);
+}
+
+.pos {
+  font-family: var(--serif);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  color: var(--c-text-3);
+}
+
+.line {
+  display: flex;
+  gap: 12px;
+  height: 7px;
+}
+
+.line i {
+  display: block;
+  flex: 1;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--c-text);
+  transition: background-color 0.3s ease;
+}
+
+.line[data-state='yin'] i {
+  background: var(--c-text);
+}
+
+.line[data-moving='true'] i {
+  background: #e8734a;
+}
+
+.line[data-state='idle'] i {
+  background: #3c3931;
+}
+
+.tag {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--c-text-3);
+  text-align: right;
+}
+
+.hint {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.8;
+  color: var(--c-text-3);
+}
+
+@media (max-width: 860px) {
+  .page {
+    padding: 28px 20px 60px;
+  }
+
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .left {
+    border-right: 0;
+    border-bottom: 1px solid var(--c-line);
+    padding: 26px 20px 30px;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 22px 14px 52px;
+  }
+
+  .right {
+    padding: 20px 16px;
+  }
+
+  .row {
+    grid-template-columns: 3rem 1fr 5.5rem;
+    gap: 10px;
+    padding: 9px 8px;
+  }
+}

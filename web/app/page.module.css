@@ -1,0 +1,227 @@
+.home {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 26px 44px 36px;
+}
+
+/* 顶部与底部的极淡光晕，制造纵深 */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 65% 42% at 50% -6%, rgba(212, 180, 120, 0.12), transparent 68%),
+    radial-gradient(ellipse 46% 34% at 84% 96%, rgba(123, 163, 153, 0.07), transparent 70%);
+}
+
+.topbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.accountLink {
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  color: var(--c-text-3);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 3px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.accountLink:hover {
+  color: var(--c-gold);
+  border-bottom-color: rgba(212, 180, 120, 0.5);
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 44px 0 40px;
+}
+
+.title {
+  margin: 18px 0 16px;
+  font-family: var(--serif);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  line-height: 1.05;
+  color: var(--c-gold-bright);
+  text-shadow: 0 0 70px rgba(247, 223, 174, 0.2);
+}
+
+.tagline {
+  margin: 0;
+  font-size: 0.875rem;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  color: var(--c-text-2);
+}
+
+.grid {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  min-height: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 26px 24px 22px;
+  border: 1px solid var(--c-line);
+  background: linear-gradient(155deg, rgba(212, 180, 120, 0.06), rgba(21, 21, 19, 0.55) 58%);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: rgba(212, 180, 120, 0.62);
+  transform: translateY(-3px);
+  background: linear-gradient(155deg, rgba(212, 180, 120, 0.14), rgba(21, 21, 19, 0.68) 62%);
+  outline: none;
+}
+
+.glyph {
+  color: var(--c-gold);
+  transition: color 0.3s ease;
+}
+
+.card:hover .glyph {
+  color: var(--c-gold-bright);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.name {
+  font-family: var(--serif);
+  font-size: 1.625rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  color: var(--c-text);
+}
+
+.desc {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  color: var(--c-text-3);
+}
+
+.arrow {
+  align-self: flex-end;
+  font-size: 0.875rem;
+  color: var(--c-text-3);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover .arrow {
+  color: var(--c-gold);
+  transform: translateX(4px);
+}
+
+.foot {
+  position: relative;
+  z-index: 1;
+  padding-top: 28px;
+  text-align: center;
+  font-size: 0.6875rem;
+  letter-spacing: 0.34em;
+  color: var(--c-text-3);
+}
+
+/* 桌面：一屏九宫，卡片撑满剩余高度 */
+@media (min-width: 1024px) and (min-height: 700px) {
+  .grid {
+    grid-template-rows: repeat(3, minmax(150px, 1fr));
+  }
+
+  .hero {
+    padding: 28px 0 30px;
+  }
+
+  .title {
+    font-size: clamp(3.25rem, 5.4vw, 5.25rem);
+    margin: 14px 0 12px;
+  }
+
+  .foot {
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 860px) {
+  .home {
+    padding: 22px 22px 48px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero {
+    padding: 40px 0 34px;
+  }
+}
+
+@media (max-width: 520px) {
+  .home {
+    padding: 20px 16px 40px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .card {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 16px;
+  }
+
+  .cardBody {
+    flex: 1;
+  }
+
+  .arrow {
+    align-self: center;
+  }
+
+  .name {
+    font-size: 1.25rem;
+  }
+
+  .title {
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+  }
+
+  .foot {
+    padding-top: 36px;
+  }
+}

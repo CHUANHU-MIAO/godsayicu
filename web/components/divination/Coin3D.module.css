@@ -1,0 +1,80 @@
+.stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 26px;
+  padding: 26px 0 34px;
+  perspective: 900px;
+}
+
+.slot {
+  position: relative;
+  width: 76px;
+  height: 76px;
+}
+
+.coin {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.side {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.side svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 58px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent);
+  transform: translateX(-50%);
+  filter: blur(1px);
+}
+
+@media (max-width: 520px) {
+  .stage {
+    gap: 16px;
+  }
+
+  .slot {
+    width: 62px;
+    height: 62px;
+  }
+
+  .shadow {
+    width: 46px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inner,
+  .coin,
+  .shadow {
+    transition: none;
+  }
+}

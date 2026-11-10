@@ -1,0 +1,287 @@
+/* ============================================================
+   本地字体：零外部请求
+   ============================================================ */
+@font-face {
+  font-family: 'LXGW WenKai';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/wenkai-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'LXGW WenKai';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/wenkai-medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/noto-sans-sc.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Noto Serif SC';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/fonts/noto-serif-sc.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/cormorant-garamond-latin.woff2') format('woff2');
+}
+
+/* ============================================================
+   观象 · 基础层
+   Design tokens / Reset / 排版基线 / 焦点 / 滚动条 / 工具类
+   ============================================================ */
+
+:root {
+  /* —— 色彩 —— */
+  --c-bg: #0b0b0a;
+  --c-bg-2: #111110;
+  --c-surface: #151513;
+  --c-surface-2: #1a1a17;
+  --c-text: #f4efe5;
+  --c-text-2: #d6d0c3;
+  --c-text-3: #a9a294;
+  --c-gold: #d4b478;
+  --c-gold-bright: #f7dfae;
+  --c-cinnabar: #d4553c;
+  --c-jade: #7ba399;
+  --c-line: #332f28;
+  --c-line-2: #46413a;
+
+  /* —— 字体 —— */
+  --serif: 'LXGW WenKai', 'Songti SC', 'STSong', serif;
+  --sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+  /* —— 字阶 —— */
+  --fs-display: clamp(2.75rem, 6vw, 4.25rem);
+  --fs-title: clamp(1.75rem, 3.6vw, 2.5rem);
+  --fs-h3: 1.375rem;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-color: var(--c-line-2) var(--c-bg);
+  scrollbar-width: thin;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+}
+
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+}
+
+/* —— 焦点：统一金色描边 —— */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-gold);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--c-gold) 30%, transparent);
+  color: var(--c-gold-bright);
+}
+
+/* —— 暗色滚动条 —— */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-line-2);
+  border: 2px solid var(--c-bg);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-text-3);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--c-bg);
+}
+
+/* —— 无障碍：视觉隐藏 —— */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* —— 背景纹理：极淡的径向渐变氛围 —— */
+.bg-texture {
+  background-color: var(--c-bg);
+  background-image:
+    radial-gradient(
+      circle at 18% 8%,
+      color-mix(in srgb, var(--c-gold) 6%, transparent) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 82% 24%,
+      color-mix(in srgb, var(--c-jade) 5%, transparent) 0%,
+      transparent 44%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      color-mix(in srgb, var(--c-cinnabar) 4%, transparent) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--c-surface-2) 55%, transparent) 0%,
+      transparent 72%
+    );
+  background-attachment: fixed;
+}
+
+/* 极细噪点：用重复 radial-gradient 模拟颗粒 */
+.bg-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.bg-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--c-text) 8%, transparent) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 4px 4px;
+  mix-blend-mode: overlay;
+}
+
+/* —— 首页骨架（保留） —— */
+.boot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 12px;
+}
+
+.boot-title {
+  margin: 0;
+  font-size: var(--fs-display);
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  color: var(--c-gold-bright);
+}
+
+.boot-sub {
+  margin: 0;
+  font-size: 0.9375rem;
+  letter-spacing: 0.2em;
+  color: var(--c-text-3);
+}
+
+/* —— 降低动态效果 —— */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,40 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.375rem;
+  padding: 0 0.55em;
+  border: 1px solid var(--c-line);
+  border-radius: 2px;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-style: normal;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.gold {
+  border-color: color-mix(in srgb, var(--c-gold) 36%, transparent);
+  background: color-mix(in srgb, var(--c-gold) 10%, transparent);
+  color: var(--c-gold-bright);
+}
+
+.cinnabar {
+  border-color: color-mix(in srgb, var(--c-cinnabar) 42%, transparent);
+  background: color-mix(in srgb, var(--c-cinnabar) 12%, transparent);
+  color: color-mix(in srgb, var(--c-cinnabar) 62%, var(--c-text));
+}
+
+.jade {
+  border-color: color-mix(in srgb, var(--c-jade) 40%, transparent);
+  background: color-mix(in srgb, var(--c-jade) 12%, transparent);
+  color: color-mix(in srgb, var(--c-jade) 68%, var(--c-text));
+}
+
+.mute {
+  border-color: var(--c-line);
+  background: color-mix(in srgb, var(--c-surface-2) 80%, transparent);
+  color: var(--c-text-3);
+}

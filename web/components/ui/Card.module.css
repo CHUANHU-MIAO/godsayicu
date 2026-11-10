@@ -1,0 +1,39 @@
+.card {
+  position: relative;
+  padding: 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: var(--c-surface);
+  color: var(--c-text);
+}
+
+/* 纸面：细腻的表面渐变 */
+.plain {
+  border-color: color-mix(in srgb, var(--c-line) 70%, transparent);
+  background: linear-gradient(
+    180deg,
+    var(--c-surface) 0%,
+    var(--c-bg-2) 100%
+  );
+}
+
+/* 描边：更克制的线框 */
+.outline {
+  border-color: var(--c-line-2);
+  background: color-mix(in srgb, var(--c-bg-2) 72%, transparent);
+}
+
+/* 微光：金色呼吸感 */
+.glow {
+  border-color: color-mix(in srgb, var(--c-gold) 32%, var(--c-line));
+  background:
+    radial-gradient(
+      120% 90% at 50% 0%,
+      color-mix(in srgb, var(--c-gold) 8%, transparent) 0%,
+      transparent 62%
+    ),
+    var(--c-surface);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--c-gold) 14%, transparent),
+    0 18px 48px -32px color-mix(in srgb, var(--c-gold) 60%, transparent);
+}
