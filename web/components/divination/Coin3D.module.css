@@ -1,16 +1,47 @@
 .stage {
+  /* 铜钱的领域色：比参考略金一些 */
+  --coin-hi: #f3d98c;
+  --coin-body: #c69a4b;
+  --coin-rim: #7c5824;
+  --coin-ink: #4a3211;
+  --coin-tray: rgba(74, 50, 17, 0.12);
+  --coin-font: 'Songti SC', 'STSong', 'SimSun', 'Source Han Serif SC', serif;
+
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 34px;
-  padding: 26px 0 38px;
+  gap: 16px;
+  padding: 30px 0 40px;
   perspective: 900px;
+}
+
+:global(html[data-appearance='dark']) .stage {
+  --coin-hi: #e3c074;
+  --coin-body: #a07d3f;
+  --coin-rim: #5e431f;
+  --coin-ink: #2c1e09;
+  --coin-tray: rgba(255, 228, 180, 0.07);
+}
+
+/* 浅浅的托盘，铜钱落在里面 */
+.tray {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 320px;
+  height: 180px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--coin-tray), transparent 72%);
+  pointer-events: none;
 }
 
 .slot {
   position: relative;
-  width: 94px;
-  height: 94px;
+  width: 82px;
+  height: 82px;
+  z-index: 1;
 }
 
 .coin {
@@ -47,9 +78,9 @@
 .shadow {
   position: absolute;
   left: 50%;
-  bottom: -16px;
-  width: 70px;
-  height: 15px;
+  bottom: -14px;
+  width: 62px;
+  height: 14px;
   border-radius: 50%;
   background: radial-gradient(closest-side, var(--c-shadow), transparent);
   transform: translateX(-50%);
@@ -58,16 +89,16 @@
 
 @media (max-width: 520px) {
   .stage {
-    gap: 18px;
+    gap: 12px;
   }
 
   .slot {
-    width: 76px;
-    height: 76px;
+    width: 66px;
+    height: 66px;
   }
 
   .shadow {
-    width: 56px;
+    width: 50px;
   }
 }
 
