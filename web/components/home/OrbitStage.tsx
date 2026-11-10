@@ -126,7 +126,7 @@ export default function OrbitStage() {
           <div className={styles.core} aria-live="polite">
             {current ? (
               <span className={styles.coreGlyph}>
-                <DivinationGlyph name={current.key} size={104} />
+                <DivinationGlyph name={current.key} size={88} />
                 <span className={styles.srOnly}>{current.name}</span>
               </span>
             ) : (

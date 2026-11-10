@@ -114,10 +114,16 @@
 }
 
 .coreGlyph {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--c-gold);
   line-height: 0;
   filter: drop-shadow(0 0 10px rgba(var(--c-accent-rgb), 0.25));
+}
+
+.coreGlyph svg {
+  display: block;
 }
 
 .srOnly {
