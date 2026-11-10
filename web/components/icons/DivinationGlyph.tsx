@@ -10,14 +10,14 @@ export type GlyphName =
   | 'qimen';
 
 const GLYPHS: Record<GlyphName, React.ReactNode> = {
-  // 六爻：六条爻线，阳实阴虚
+  // 六爻：地山谦（上坤下艮，六爻皆吉）—— 自上而下为坤三爻（三阴）覆艮三爻（下二阴、上一阳）
   liuyao: (
     <>
-      <path d="M6 8h32" />
+      <path d="M6 8h13M25 8h13" />
       <path d="M6 14h13M25 14h13" />
-      <path d="M6 20h32" />
-      <path d="M6 26h13M25 26h13" />
-      <path d="M6 32h32" />
+      <path d="M6 20h13M25 20h13" />
+      <path d="M6 26h32" />
+      <path d="M6 32h13M25 32h13" />
       <path d="M6 38h13M25 38h13" />
     </>
   ),

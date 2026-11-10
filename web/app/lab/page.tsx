@@ -198,7 +198,6 @@ export default function LabPage() {
           <span className={styles.displayDot}>·</span>
           <span>问</span><span>天</span>
         </h1>
-        <p className={styles.tagline}>观象以知变，问天而察机</p>
         <p className={styles.heroNote}>
           此页只保留色谱与外观对照：三套配色、亮暗两套色板、WCAG 对比度与实际排版取样，可直接切换验证。
         </p>

@@ -22,12 +22,11 @@ export default function Home() {
 
       <header className={styles.hero}>
         <TodayBar />
-        <h1 className={styles.title}>观象 · 问天</h1>
       </header>
 
       <OrbitStage />
 
-      <footer className={styles.foot}>观象 · 问天</footer>
+      <footer className={styles.foot}>一念归静 · 万理昭明</footer>
     </main>
   );
 }

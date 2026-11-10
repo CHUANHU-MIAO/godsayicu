@@ -124,9 +124,14 @@ export default function OrbitStage() {
             <ObservingDisc />
           </div>
           <div className={styles.core} aria-live="polite">
-            <p className={styles.coreEyebrow}>{current ? '所 选' : '观 象 · 问 天'}</p>
-            <h2 className={styles.coreTitle}>{current ? current.name : '观象'}</h2>
-            <p className={styles.coreDesc}>{current ? current.sub : '观象以知变 · 问天而察机'}</p>
+            {current ? (
+              <span className={styles.coreGlyph}>
+                <DivinationGlyph name={current.key} size={104} />
+                <span className={styles.srOnly}>{current.name}</span>
+              </span>
+            ) : (
+              <h1 className={styles.coreTitle}>观象</h1>
+            )}
           </div>
         </div>
 

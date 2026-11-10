@@ -113,11 +113,23 @@
   pointer-events: none;
 }
 
-.coreEyebrow {
-  font-size: 0.625rem;
-  letter-spacing: 0.26em;
-  color: var(--c-text-3);
-  margin-bottom: 10px;
+.coreGlyph {
+  display: block;
+  color: var(--c-gold);
+  line-height: 0;
+  filter: drop-shadow(0 0 10px rgba(var(--c-accent-rgb), 0.25));
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .coreTitle {
@@ -127,14 +139,6 @@
   letter-spacing: 0.18em;
   text-indent: 0.18em;
   color: var(--c-text);
-  margin-bottom: 8px;
-}
-
-.coreDesc {
-  font-size: 0.75rem;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
-  color: var(--c-text-3);
 }
 
 .nodeSlot {
