@@ -126,7 +126,7 @@ export default function LiuyaoCastPage() {
 
       <header className={styles.head}>
         <h1 className={styles.title}>铜钱起卦</h1>
-        <p className={styles.sub}>三枚铜钱（乾隆·道光·嘉庆，谐音「钱到家」），逐爻抛掷，自下而上成卦。</p>
+        <p className={styles.sub}>乾隆通宝、道光通宝、嘉庆通宝三枚，逐爻抛掷，自下而上成卦。</p>
       </header>
 
       <section className={styles.card}>

@@ -25,42 +25,82 @@ function CoinSvg({
   id: string;
 }) {
   const [top, right, bottom, left] = reign;
+  const bodyId = `${id}-b`;
+  const rimId = `${id}-r`;
+  const charId = `${id}-c`;
+  const holeId = `${id}-h`;
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <defs>
-        <radialGradient id={id} cx="38%" cy="30%" r="78%">
-          <stop offset="0%" stopColor="#fff5d2" />
-          <stop offset="34%" stopColor="#f6cf6f" />
-          <stop offset="70%" stopColor="#dba136" />
-          <stop offset="100%" stopColor="#9c6a1d" />
+        {/* 钱体：暖金，带高光与暗边 */}
+        <radialGradient id={bodyId} cx="36%" cy="27%" r="84%">
+          <stop offset="0%" stopColor="#fff6d8" />
+          <stop offset="24%" stopColor="#f7d47e" />
+          <stop offset="55%" stopColor="#dca93d" />
+          <stop offset="82%" stopColor="#a9771f" />
+          <stop offset="100%" stopColor="#734c14" />
+        </radialGradient>
+        {/* 外缘：圆柱金属边，上亮下暗 */}
+        <linearGradient id={rimId} x1="0.15" y1="0" x2="0.35" y2="1">
+          <stop offset="0%" stopColor="#fff1c2" />
+          <stop offset="44%" stopColor="#d6a236" />
+          <stop offset="100%" stopColor="#7e531a" />
+        </linearGradient>
+        {/* 文字：上亮下暗，模拟阳起浮雕 */}
+        <linearGradient id={charId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#8c5c1a" />
+          <stop offset="100%" stopColor="#3c2507" />
+        </linearGradient>
+        {/* 方孔：凹陷 */}
+        <radialGradient id={holeId} cx="50%" cy="34%" r="78%">
+          <stop offset="0%" stopColor="#3a2810" />
+          <stop offset="100%" stopColor="#0f0902" />
         </radialGradient>
       </defs>
 
-      {/* 钱体：偏金的暖金渐变 */}
-      <circle cx="50" cy="50" r="48" fill={`url(#${id})`} stroke="#8a5a1b" strokeWidth="1.5" />
-      <circle cx="50" cy="50" r="43" fill="none" stroke="#e7c478" strokeWidth="0.8" opacity="0.85" />
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#9c6c22" strokeWidth="0.7" opacity="0.6" />
-
-      {/* 方孔 */}
-      <rect x="36" y="36" width="28" height="28" rx="1.5" fill="#2e2010" stroke="#7d521a" strokeWidth="1.3" />
+      {/* 外缘立体边 */}
+      <circle cx="50" cy="50" r="49" fill={`url(#${rimId})`} stroke="#5f3f12" strokeWidth="1.4" />
+      {/* 钱体 */}
+      <circle cx="50" cy="50" r="44.5" fill={`url(#${bodyId})`} stroke="#8f6520" strokeWidth="0.8" />
+      {/* 内圈沟槽，分隔外缘与字面 */}
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#a3741d" strokeWidth="1.5" opacity="0.75" />
+      <circle cx="50" cy="50" r="38.4" fill="none" stroke="#f6dd92" strokeWidth="0.6" opacity="0.5" />
+      {/* 金属反光（左上高光） */}
+      <path d="M15 39 A42 42 0 0 1 39 15" fill="none" stroke="#fff7e0" strokeOpacity="0.42" strokeWidth="2.6" strokeLinecap="round" />
+      {/* 方孔：凹陷 + 内阴影 */}
+      <rect x="36" y="36" width="28" height="28" rx="2" fill={`url(#${holeId})`} stroke="#c79f48" strokeWidth="1.1" />
+      <rect x="36.6" y="36.6" width="26.8" height="26.8" rx="1.6" fill="none" stroke="#000" strokeOpacity="0.5" strokeWidth="1" />
 
       {back ? (
         <>
-          {/* 背：素背，四决纹 */}
-          <path d="M43 17h4M57 17h4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M43 83h4M57 83h4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M17 43v4M17 57v4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M83 43v4M83 57v4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
-          <circle cx="50" cy="50" r="20" fill="none" stroke="#7d521a" strokeWidth="0.9" opacity="0.5" />
+          {/* 背：素背，四决纹 + 中心圈 */}
+          <path d="M43 16.5h4M57 16.5h4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M43 83.5h4M57 83.5h4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M16.5 43v4M16.5 57v4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M83.5 43v4M83.5 57v4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <circle cx="50" cy="50" r="21" fill="none" stroke="#7d521a" strokeWidth="0.9" opacity="0.5" />
         </>
       ) : (
-        <>
-          {/* 字：年号 + 通宝，上·右·下·左 */}
-          <text x="50" y="28" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{top}</text>
-          <text x="73.5" y="54" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{right}</text>
-          <text x="50" y="80" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{bottom}</text>
-          <text x="26.5" y="54" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{left}</text>
-        </>
+        (() => {
+          const glyphs: { ch: string; x: number; y: number }[] = [
+            { ch: top, x: 50, y: 27.5 },
+            { ch: right, x: 73.5, y: 54 },
+            { ch: bottom, x: 50, y: 80.5 },
+            { ch: left, x: 26.5, y: 54 },
+          ];
+          return (
+            <g>
+              {/* 阳起浮雕：右下暖光 + 左上高光，再压深字，呈现錾刻入铜的立体感 */}
+              {glyphs.map((g, i) => (
+                <g key={i}>
+                  <text x={g.x + 0.7} y={g.y + 0.9} textAnchor="middle" fontSize="12" fontWeight="700" fill="#5c3c10" opacity="0.55">{g.ch}</text>
+                  <text x={g.x - 0.6} y={g.y - 0.7} textAnchor="middle" fontSize="12" fontWeight="700" fill="#fff2c8" opacity="0.5">{g.ch}</text>
+                  <text x={g.x} y={g.y} textAnchor="middle" fontSize="12" fontWeight="700" fill={`url(#${charId})`} stroke="#241603" strokeWidth="0.3">{g.ch}</text>
+                </g>
+              ))}
+            </g>
+          );
+        })()
       )}
     </svg>
   );
