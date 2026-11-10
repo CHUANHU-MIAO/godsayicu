@@ -121,7 +121,7 @@
 .modeButton[data-active='true'] {
   border-color: var(--c-gold);
   color: var(--c-gold-bright);
-  background: rgba(201, 167, 103, 0.1);
+  background: rgba(var(--c-accent-rgb), 0.1);
 }
 
 .numbers {
@@ -133,9 +133,9 @@
 .error {
   margin: 0;
   padding: 10px 12px;
-  border: 1px solid rgba(201, 72, 47, 0.45);
-  background: rgba(201, 72, 47, 0.08);
-  color: #e58e7c;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  color: var(--c-negative);
   font-size: 0.8125rem;
 }
 
@@ -227,13 +227,13 @@
   padding: 18px 18px;
   border: 1px solid var(--c-line-2);
   border-left: 2px solid var(--c-gold);
-  background: rgba(201, 167, 103, 0.05);
+  background: rgba(var(--c-accent-rgb), 0.05);
   margin-bottom: 28px;
 }
 
 .judgement[data-outcome='凶'] {
   border-left-color: var(--c-cinnabar);
-  background: rgba(201, 72, 47, 0.06);
+  background: rgba(var(--c-accent-rgb), 0.06);
 }
 
 .outcome {
@@ -244,7 +244,7 @@
 }
 
 .judgement[data-outcome='凶'] .outcome {
-  color: #e58e7c;
+  color: var(--c-negative);
 }
 
 .outcomeText {
@@ -328,12 +328,12 @@
 .warn {
   margin: 0;
   padding: 14px 16px;
-  border: 1px solid rgba(201, 72, 47, 0.35);
-  background: rgba(201, 72, 47, 0.06);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+  background: rgba(var(--c-accent-rgb), 0.06);
   list-style: none;
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: #d99a8b;
+  color: var(--c-negative);
 }
 
 @media (max-width: 900px) {

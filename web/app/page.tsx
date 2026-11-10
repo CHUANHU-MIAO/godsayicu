@@ -23,7 +23,6 @@ export default function Home() {
       <header className={styles.hero}>
         <TodayBar />
         <h1 className={styles.title}>观象 · 问天</h1>
-        <p className={styles.tagline}>九门环列 · 择一而入</p>
       </header>
 
       <OrbitStage />

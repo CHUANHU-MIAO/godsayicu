@@ -64,14 +64,6 @@
   color: var(--c-gold-bright);
 }
 
-.tagline {
-  margin: 0;
-  font-size: 0.8125rem;
-  letter-spacing: 0.26em;
-  text-indent: 0.26em;
-  color: var(--c-text-3);
-}
-
 .foot {
   position: relative;
   z-index: 2;

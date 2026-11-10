@@ -76,6 +76,15 @@
   --c-glow: rgba(224, 104, 79, 0.1);
   --c-glow-soft: rgba(159, 184, 174, 0.06);
 
+  /* 语义色：组件只引用这些变量，亮暗切换时不会残留深色块 */
+  --c-active-bg: rgba(224, 104, 79, 0.16);
+  --c-idle-line: #4a403a;
+  --c-positive: #9fd3b6;
+  --c-negative: #e58e7c;
+  --c-scrim: rgba(0, 0, 0, 0.62);
+  --c-shadow: rgba(0, 0, 0, 0.28);
+  --c-subtle: rgba(255, 255, 255, 0.025);
+
   /* 字体 */
   --serif: 'LXGW WenKai', 'Songti SC', 'STSong', serif;
   --sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -112,6 +121,14 @@
   --c-jade-rgb: 63, 111, 99;
   --c-glow: rgba(178, 63, 40, 0.08);
   --c-glow-soft: rgba(63, 111, 99, 0.05);
+
+  --c-active-bg: rgba(178, 63, 40, 0.1);
+  --c-idle-line: #cdbcad;
+  --c-positive: #2f6b4f;
+  --c-negative: #a5351f;
+  --c-scrim: rgba(34, 26, 23, 0.26);
+  --c-shadow: rgba(90, 60, 45, 0.18);
+  --c-subtle: rgba(34, 26, 23, 0.035);
 }
 
 html {

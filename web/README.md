@@ -21,7 +21,7 @@ cd C:\Users\Administrator\Desktop\wentian\web
 npm run dev
 ```
 
-访问 `http://localhost:3000`。设计 / 性能方案台在 `/lab`，匿名排盘记录在 `/history`。
+访问 `http://localhost:3000`。色谱与外观方案台在 `/lab`，匿名排盘记录在 `/history`。
 
 `?appearance=light` / `?appearance=dark` 可强制预览某一主题（仅首屏生效，手动切换后自动失效）。
 
@@ -73,11 +73,12 @@ uncaughtException [Error: EPERM: operation not permitted, open '...\web\.next\tr
 
 ## 外观与动效
 
-- **朱玄 / 月纸**：默认暗色为朱玄（墨夜 + 朱砂），`app/globals.css` 提供亮色「月纸」全套 token。组件颜色一律走 `--c-*` 变量（含 `--c-accent-rgb` 等 RGB 分量），禁止硬编码色值，否则亮暗切换会残留旧色。
+- **朱玄 / 月纸**：默认暗色为朱玄（墨夜 + 朱砂），`app/globals.css` 提供亮色「月纸」全套 token。组件颜色一律走 `--c-*` 变量（含 `--c-accent-rgb` 等 RGB 分量），**禁止硬编码色值**，否则亮暗切换会残留深色块。语义色 `--c-active-bg` / `--c-idle-line` / `--c-positive` / `--c-negative` / `--c-scrim` / `--c-shadow` / `--c-subtle` 均已按亮暗两套分别定义，新增组件直接引用即可。
 - **三态切换**：右下角悬浮按钮提供亮色 / 暗色 / 跟随系统；偏好存 `localStorage.wen.appearance`，`layout.tsx` 的内联脚本在首屏渲染前同步写入 `html[data-appearance]`，避免闪烁。
 - **性能自适应**：`lib/motion/governor.ts` 综合 CPU 核数、`deviceMemory`、网络有效性、省流量、触屏、DPR，并采样一次真实 rAF 帧率，输出 `off / calm / full` 写入 `html[data-motion]`。低档关闭全部动画、不绑定滚动/鼠标监听、不渲染粒子层；系统 `prefers-reduced-motion` 强制静态且不可手动覆盖。手动偏好存 `localStorage.wen.motion`，档位可在 `/lab` 性能面板查看与覆盖。
 - **星图首页**：`components/home/OrbitStage` 为纯 SVG + CSS 实现（24 刻度、八卦爻线、九门环绕），零 3D 依赖；`≤900px` 自动退化为卡片网格。
-- **方案台**：`/lab` 保留三套色谱、三种布局、动效库选型与性能诊断面板。
+- **方案台**：`/lab` 只保留「色谱与外观」——三套配色、亮暗两套色板、WCAG 对比度与实际排版取样；布局、动效、性能诊断等对照区块已移除。性能自适应治理仍由 `lib/motion/governor.ts` 在全站运行，与方案台是否展示无关。
+- **开发角标**：`next.config.ts` 设 `devIndicators: false`，关闭开发模式下左下角的 Next.js「N」角标；生产构建本就不显示。
 
 ## 生产部署（Ubuntu）
 

@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type CSSProperties,
-  type MouseEvent,
-} from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 
 import {
@@ -18,19 +11,10 @@ import {
   type AppearanceChoice,
   type AppearanceState,
 } from '@/lib/theme/appearance';
-import {
-  getMotion,
-  refreshMotion,
-  setMotionChoice,
-  subscribeMotion,
-  type MotionChoice,
-  type MotionState,
-} from '@/lib/motion/governor';
 
 import styles from './lab.module.css';
 
 type ThemeKey = 'xuanjin' | 'cangbi' | 'zhuxuan';
-type LayoutKey = 'grid' | 'editorial' | 'orbit';
 
 interface ThemeDef {
   key: ThemeKey;
@@ -136,52 +120,11 @@ const THEMES: ThemeDef[] = [
   },
 ];
 
-const LAYOUTS: { key: LayoutKey; name: string; desc: string; tags: string[] }[] = [
-  {
-    key: 'grid',
-    name: '九宫 · 旧版',
-    desc: '3×3 等权卡片，一眼看全九个入口。信息效率高，但节奏均匀、缺少主次，是「工具页」而非「作品」。',
-    tags: ['信息效率最高', '零改造成本', '缺叙事'],
-  },
-  {
-    key: 'editorial',
-    name: '卷轴 · 编辑式',
-    desc: '超大标题占左，纵向清单占右，故意打破对称留出大片负空间。参考 2026 获奖站的档案索引与破格编排。',
-    tags: ['留白即奢华', '字重强对比', '滚动叙事'],
-  },
-  {
-    key: 'orbit',
-    name: '星图 · 沉浸式',
-    desc: '已选定并落地正式首页。中央观象盘（纯 SVG 自绘：刻度、八卦爻线）+ 九个入口环绕，悬停联动中央说明。零 3D 依赖，≤900px 自动退化为卡片网格。',
-    tags: ['已落地', '零 3D 依赖', '移动端退化网格'],
-  },
-];
-
-const LIBRARIES = [
-  { name: '原生 CSS + Web Animations', size: '0 KB', role: '滚动揭示、SVG 描边、悬停、卷轴展开', verdict: '已采用', note: '跑在合成线程，零 JS；正式站星图与测试页动效全部由它实现' },
-  { name: '性能自适应治理（自研）', size: '约 2 KB', role: '按设备能力输出 off / calm / full 三档', verdict: '已采用', note: 'CPU、内存、网络、像素比 + 真实 rAF 帧率采样；低档不绑定监听、不渲染粒子' },
-  { name: 'Motion（原 Framer Motion）', size: '2.6–18 KB', role: '组件入场/退出、layout 动画、页面转场', verdict: '后续', note: 'React 声明式，自动尊重 prefers-reduced-motion；结果页分段展开时再引' },
-  { name: 'GSAP + ScrollTrigger', size: '约 23–31 KB', role: '长篇滚动叙事、pin 住场景', verdict: '暂缓', note: '星图已用原生实现，无需为单个首页引入时间线引擎' },
-  { name: 'Lenis', size: '约 3 KB', role: '惯性平滑滚动', verdict: '暂缓', note: '会改变全站手感，且影响低端机滚动性能' },
-  { name: 'Anime.js v4', size: '约 13 KB', role: 'SVG 变形、文字分裂', verdict: '不引入', note: 'stroke-dasharray 与逐字 stagger 已用原生覆盖' },
-  { name: 'Three.js / R3F', size: '约 155 KB gzip', role: '3D 星图、粒子场', verdict: '已规避', note: '星图改用 SVG + CSS 达成同等观感，省下 155 KB 与 GPU 开销' },
-  { name: 'React Bits / Magic UI', size: '复制粘贴', role: '现成特效组件', verdict: '只借鉴', note: '闭源商用需逐个审许可，不直接引依赖' },
-];
-
 const APPEARANCE_OPTIONS: { key: AppearanceChoice; label: string }[] = [
   { key: 'light', label: '亮 色' },
   { key: 'dark', label: '暗 色' },
   { key: 'system', label: '跟随系统' },
 ];
-
-const MOTION_OPTIONS: { key: MotionChoice; label: string }[] = [
-  { key: 'auto', label: '自 动' },
-  { key: 'off', label: '静 态' },
-  { key: 'calm', label: '克 制' },
-  { key: 'full', label: '完 整' },
-];
-
-const TIER_LABEL: Record<string, string> = { off: '静态', calm: '克制', full: '完整' };
 
 function srgb(value: number): number {
   const v = value / 255;
@@ -203,7 +146,7 @@ function contrastRatio(a: string, b: string): number {
 
 function SectionHead({ n, title, sub }: { n: string; title: string; sub: string }) {
   return (
-    <div className={styles.sectionHead} data-reveal>
+    <div className={styles.sectionHead}>
       <span className={styles.sectionNo}>{n}</span>
       <div>
         <h2 className={styles.sectionTitle}>{title}</h2>
@@ -215,16 +158,9 @@ function SectionHead({ n, title, sub }: { n: string; title: string; sub: string 
 
 export default function LabPage() {
   const [theme, setTheme] = useState<ThemeKey>('zhuxuan');
-  const [layout, setLayout] = useState<LayoutKey>('orbit');
   const [appearance, setAppearanceState] = useState<AppearanceState>({ choice: 'system', resolved: 'dark' });
-  const [motion, setMotionState] = useState<MotionState>({
-    choice: 'auto', tier: 'calm', report: null, probing: false,
-  });
-  const [replay, setReplay] = useState(0);
-  const parallaxRef = useRef<HTMLDivElement | null>(null);
 
   const activeTheme = THEMES.find((item) => item.key === theme) ?? THEMES[2];
-  const activeLayout = LAYOUTS.find((item) => item.key === layout) ?? LAYOUTS[2];
   const isLight = appearance.resolved === 'light';
   const activeVars = isLight ? activeTheme.lightVars : activeTheme.vars;
   const activePairs = isLight ? activeTheme.lightPairs : activeTheme.pairs;
@@ -240,87 +176,23 @@ export default function LabPage() {
     return subscribeAppearance(setAppearanceState);
   }, []);
 
-  useEffect(() => {
-    setMotionState(getMotion());
-    return subscribeMotion(setMotionState);
-  }, []);
-
-  // 进入视口渐显：低档位降级为一次性直接显示，不产生持续动画
-  useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
-    if (!('IntersectionObserver' in window) || motion.tier === 'off') {
-      nodes.forEach((node) => node.classList.add(styles.revealed));
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(styles.revealed);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
-    );
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, [motion.tier]);
-
-  // 视差：仅「完整」档绑定滚动监听，低档完全不挂监听器
-  useEffect(() => {
-    if (motion.tier !== 'full') return;
-    let frame = 0;
-    const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        const y = Math.min(window.scrollY, 700);
-        parallaxRef.current?.style.setProperty('--parallax-y', `${y * 0.18}px`);
-        frame = 0;
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, [motion.tier]);
-
-  function handleTilt(event: MouseEvent<HTMLDivElement>) {
-    if (motion.tier !== 'full') return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    event.currentTarget.style.setProperty('--tilt-x', `${(-y * 9).toFixed(2)}deg`);
-    event.currentTarget.style.setProperty('--tilt-y', `${(x * 9).toFixed(2)}deg`);
-  }
-
-  function resetTilt(event: MouseEvent<HTMLDivElement>) {
-    event.currentTarget.style.setProperty('--tilt-x', '0deg');
-    event.currentTarget.style.setProperty('--tilt-y', '0deg');
-  }
-
-  const report = motion.report;
-
   return (
     <main
       className={styles.lab}
       style={activeVars as CSSProperties}
-      data-motion={motion.tier}
-      data-layout={layout}
       data-appearance={appearance.resolved}
     >
-      <div className={styles.aurora} ref={parallaxRef} aria-hidden="true" />
+      <div className={styles.aurora} aria-hidden="true" />
       <div className={styles.grain} aria-hidden="true" />
 
       <nav className={styles.nav}>
         <Link href="/" className={styles.navLink}>← 返回正式站</Link>
-        <span className={styles.badge}>方案台 · 正式站已按朱玄 + 星图落地</span>
+        <span className={styles.badge}>色谱与外观 · 方案台</span>
         <Link href="/history" className={styles.navLink}>问事录 →</Link>
       </nav>
 
       <header className={styles.hero}>
-        <p className={styles.eyebrow}>DESIGN LAB · 2026 / SELECTED PROPOSAL</p>
+        <p className={styles.eyebrow}>DESIGN LAB · 2026 / COLOR &amp; APPEARANCE</p>
         <h1 className={styles.display}>
           <span>观</span><span>象</span>
           <span className={styles.displayDot}>·</span>
@@ -328,15 +200,14 @@ export default function LabPage() {
         </h1>
         <p className={styles.tagline}>观象以知变，问天而察机</p>
         <p className={styles.heroNote}>
-          已选定朱玄配色与星图布局，并加入亮暗切换与性能自适应动效。下方保留三套色谱、三种布局与动效库对照，可实时切换验证。
+          此页只保留色谱与外观对照：三套配色、亮暗两套色板、WCAG 对比度与实际排版取样，可直接切换验证。
         </p>
-        <div className={styles.scrollHint} aria-hidden="true"><span>向 下 展 开</span><i /></div>
       </header>
 
       <section className={styles.section} id="palette">
         <SectionHead n="01" title="色谱与外观" sub="Color system · 朱玄为选定暗色，配套「月纸」亮色；三态切换全站生效" />
 
-        <div className={styles.appearanceBar} data-reveal>
+        <div className={styles.appearanceBar}>
           <span className={styles.appearanceLabel}>外 观</span>
           <div className={styles.appearanceSwitch}>
             {APPEARANCE_OPTIONS.map((item) => (
@@ -345,6 +216,7 @@ export default function LabPage() {
                 type="button"
                 className={`${styles.motionBtn} ${appearance.choice === item.key ? styles.motionOn : ''}`}
                 onClick={() => setAppearance(item.key)}
+                aria-pressed={appearance.choice === item.key}
               >
                 {item.label}
               </button>
@@ -356,13 +228,14 @@ export default function LabPage() {
           </span>
         </div>
 
-        <div className={styles.switcher} data-reveal>
+        <div className={styles.switcher}>
           {THEMES.map((item) => (
             <button
               key={item.key}
               type="button"
               className={`${styles.switchBtn} ${theme === item.key ? styles.switchOn : ''}`}
               onClick={() => setTheme(item.key)}
+              aria-pressed={theme === item.key}
             >
               <span
                 className={styles.swatchMini}
@@ -376,7 +249,7 @@ export default function LabPage() {
           ))}
         </div>
 
-        <div className={styles.paletteGrid} data-reveal>
+        <div className={styles.paletteGrid}>
           <div className={styles.palettePanel}>
             <p className={styles.panelLabel}>色 板 / {activeTheme.name} · {isLight ? '亮色' : '暗色'}</p>
             <div className={styles.swatches}>
@@ -426,268 +299,8 @@ export default function LabPage() {
         </div>
       </section>
 
-      <section className={styles.section} id="layout">
-        <SectionHead n="02" title="布局" sub="Layout system · 星图已落地正式首页，切换可对照结构差异" />
-
-        <div className={styles.switcher} data-reveal>
-          {LAYOUTS.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              className={`${styles.switchBtn} ${layout === item.key ? styles.switchOn : ''}`}
-              onClick={() => setLayout(item.key)}
-            >
-              <span className={styles.layoutMini} data-mini={item.key} aria-hidden="true">
-                <i /><i /><i /><i /><i /><i /><i /><i /><i />
-              </span>
-              <span>
-                <strong>{item.name}</strong>
-                <small>LAYOUT</small>
-              </span>
-            </button>
-          ))}
-        </div>
-
-        <div className={styles.preview} data-reveal>
-          <div className={styles.previewTop}>
-            <span className={styles.previewDot} /><span className={styles.previewDot} /><span className={styles.previewDot} />
-            <code>wentian / {layout}</code>
-          </div>
-          <div className={styles.wire} key={layout}>
-            {layout === 'grid' && (
-              <div className={styles.wireGrid}>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <span key={i} className={styles.wireCell}><i /><b /></span>
-                ))}
-              </div>
-            )}
-            {layout === 'editorial' && (
-              <div className={styles.wireEditorial}>
-                <div className={styles.wireBig}><i /><i /><i /></div>
-                <div className={styles.wireList}>
-                  {Array.from({ length: 6 }, (_, i) => <span key={i}><i /><b /></span>)}
-                </div>
-              </div>
-            )}
-            {layout === 'orbit' && (
-              <div className={styles.wireOrbit}>
-                <div className={styles.wireCore} />
-                {Array.from({ length: 9 }, (_, i) => (
-                  <span
-                    key={i}
-                    className={styles.wireNode}
-                    style={{ transform: `rotate(${(i * 360) / 9 - 90}deg) translateY(-96px) rotate(${-((i * 360) / 9 - 90)}deg)` }}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.layoutDesc} data-reveal>
-          <h3 className={styles.layoutName}>{activeLayout.name}</h3>
-          <p>{activeLayout.desc}</p>
-          <div className={styles.tags}>
-            {activeLayout.tags.map((tag) => <span key={tag}>{tag}</span>)}
-          </div>
-          <Link href="/" className={styles.layoutLink}>查看正式首页星图实景 →</Link>
-        </div>
-      </section>
-
-      <section className={styles.section} id="motion">
-        <SectionHead n="03" title="动效与性能自适应" sub="Motion system · 打开页面即探测设备，低性能机器自动降级，不卡顿" />
-
-        <div className={styles.perfPanel} data-reveal>
-          <div className={styles.perfHead}>
-            <div>
-              <p className={styles.panelLabel}>性 能 治 理 / AUTO GOVERNOR</p>
-              <p className={styles.perfLead}>
-                综合 CPU 核数、内存、网络、像素比与一次真实帧率采样，自动选择档位。低档不绑定滚动/鼠标监听、不渲染粒子层、关闭无限循环动画。
-              </p>
-            </div>
-            <span className={styles.perfTier} data-tier={motion.tier}>
-              {motion.probing ? '检测中…' : `当前 · ${TIER_LABEL[motion.tier]}`}
-            </span>
-          </div>
-
-          <div className={styles.motionBar}>
-            <div className={styles.motionSwitch}>
-              {MOTION_OPTIONS.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  className={`${styles.motionBtn} ${motion.choice === item.key ? styles.motionOn : ''}`}
-                  onClick={() => setMotionChoice(item.key)}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-            <button
-              type="button"
-              className={styles.replayBtn}
-              onClick={() => {
-                if (motion.choice !== 'auto') setMotionChoice('auto');
-                else refreshMotion();
-                setReplay((n) => n + 1);
-              }}
-            >
-              ↻ 重新检测并重播
-            </button>
-          </div>
-
-          <div className={styles.perfGrid}>
-            {[
-              ['CPU', report ? `${report.cores} 核` : '—'],
-              ['内存', report?.memoryGb ? `${report.memoryGb} GB` : '未公开'],
-              ['网络', report?.effectiveType ?? '—'],
-              ['设备', report ? (report.mobile ? '触屏 / 小屏' : '桌面') : '—'],
-              ['像素比', report ? report.dpr.toFixed(1) : '—'],
-              ['实测帧率', report?.fps ? `${report.fps} FPS` : '采样中'],
-              ['综合评分', report ? `${report.score} 分` : '—'],
-            ].map(([label, value]) => (
-              <div className={styles.perfItem} key={label}>
-                <span>{label}</span><b>{value}</b>
-              </div>
-            ))}
-          </div>
-
-          {report && (
-            <ul className={styles.perfReasons}>
-              {report.reasons.map((reason) => <li key={reason}>{reason}</li>)}
-              {report.reducedMotion && <li>系统已开启「减少动态效果」，强制静态且不可手动覆盖</li>}
-            </ul>
-          )}
-          <p className={styles.perfFoot}>
-            自动档为默认；手动选择会记住偏好。系统「减少动态效果」始终优先，任何档位下页面内容都完整可读。
-          </p>
-        </div>
-
-        <div className={styles.demoGrid}>
-          <article className={styles.demo} data-reveal>
-            <header><span>01</span><h3>滚动揭示</h3></header>
-            <p className={styles.demoDesc}>进入视口才渐显，IntersectionObserver 只切类名，位移由合成线程承担。</p>
-            <div className={styles.demoStage} key={`reveal-${replay}`}>
-              <span className={styles.revealBox}>观</span>
-              <span className={styles.revealBox} style={{ animationDelay: '120ms' }}>象</span>
-              <span className={styles.revealBox} style={{ animationDelay: '240ms' }}>知</span>
-              <span className={styles.revealBox} style={{ animationDelay: '360ms' }}>变</span>
-            </div>
-          </article>
-
-          <article className={styles.demo} data-reveal>
-            <header><span>02</span><h3>笔画书写</h3></header>
-            <p className={styles.demoDesc}>SVG stroke-dasharray 逐笔写出卦爻，比淡入更贴合书写与卷轴的意象。</p>
-            <div className={styles.demoStage} key={`stroke-${replay}`}>
-              <svg viewBox="0 0 160 96" className={styles.strokeSvg} aria-hidden="true">
-                <path className={styles.strokeLine} d="M20 18 H140" style={{ animationDelay: '0ms' }} />
-                <path className={styles.strokeLine} d="M20 48 H62 M98 48 H140" style={{ animationDelay: '260ms' }} />
-                <path className={styles.strokeLine} d="M20 78 H140" style={{ animationDelay: '400ms' }} />
-              </svg>
-            </div>
-          </article>
-
-          <article className={styles.demo} data-reveal>
-            <header><span>03</span><h3>卷轴展开</h3></header>
-            <p className={styles.demoDesc}>从中心向两侧徐徐展开，对应「展卷」而非「弹窗」。</p>
-            <div className={styles.demoStage} key={`scroll-${replay}`}>
-              <div className={styles.scrollOpen}><span>天 地 定位 · 山 泽 通 气</span></div>
-            </div>
-          </article>
-
-          <article className={styles.demo} data-reveal>
-            <header><span>04</span><h3>磁吸倾斜</h3></header>
-            <p className={styles.demoDesc}>光标位置驱动 rotateX/Y，只改 transform；仅「完整」档绑定监听。</p>
-            <div className={styles.demoStage}>
-              <div className={styles.tiltCard} onMouseMove={handleTilt} onMouseLeave={resetTilt}>
-                <span className={styles.tiltGlyph}>☯</span><b>移动光标试试</b>
-              </div>
-            </div>
-          </article>
-
-          <article className={styles.demo} data-reveal>
-            <header><span>05</span><h3>光泽扫过</h3></header>
-            <p className={styles.demoDesc}>悬停时一道极窄高光掠过按钮，作为「可点」的确认反馈，不闪烁。</p>
-            <div className={styles.demoStage}>
-              <button type="button" className={styles.shineBtn}><span>掷 筊 问 事</span></button>
-            </div>
-          </article>
-
-          <article className={styles.demo} data-reveal>
-            <header><span>06</span><h3>逐字揭示</h3></header>
-            <p className={styles.demoDesc}>标题按字错峰 55ms，总时长控制在 300ms 内，符合高端站的克制节奏。</p>
-            <div className={styles.demoStage} key={`chars-${replay}`}>
-              <p className={styles.charLine}>
-                {'一阴一阳之谓道'.split('').map((char, i) => (
-                  <span key={i} style={{ animationDelay: `${i * 55}ms` }}>{char}</span>
-                ))}
-              </p>
-            </div>
-          </article>
-
-          <article className={styles.demo} data-reveal>
-            <header><span>07</span><h3>视差层叠</h3></header>
-            <p className={styles.demoDesc}>背景光晕以 0.18 倍速随滚动位移；仅「完整」档注册滚动监听。</p>
-            <div className={styles.demoStage}>
-              <div className={styles.parallaxDemo}><i /><i /><i /><span>近 · 中 · 远</span></div>
-            </div>
-          </article>
-
-          <article className={styles.demo} data-reveal>
-            <header><span>08</span><h3>呼吸光晕</h3></header>
-            <p className={styles.demoDesc}>9 秒周期的极缓明灭，幅度很小。不做脉冲、不做持续旋转。</p>
-            <div className={styles.demoStage}><div className={styles.breath}><span>静</span></div></div>
-          </article>
-        </div>
-      </section>
-
-      <section className={styles.section} id="stack">
-        <SectionHead n="04" title="选型与落地" sub="Library & rollout · 不堆库，按职责分层引入" />
-
-        <div className={styles.tableWrap} data-reveal>
-          <table className={styles.table}>
-            <thead><tr><th>工具</th><th>体积</th><th>职责</th><th>结论</th></tr></thead>
-            <tbody>
-              {LIBRARIES.map((lib) => (
-                <tr key={lib.name}>
-                  <td><b>{lib.name}</b><small>{lib.note}</small></td>
-                  <td><code>{lib.size}</code></td>
-                  <td>{lib.role}</td>
-                  <td><span className={styles.verdict}>{lib.verdict}</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className={styles.rollout} data-reveal>
-          <div className={styles.rolloutStep}>
-            <b>已完成 · 主题体系</b>
-            <p>朱玄暗色 + 月纸亮色两套 token，亮/暗/跟随系统三态，首屏脚本同步应用避免闪烁，偏好持久化。</p>
-          </div>
-          <div className={styles.rolloutStep}>
-            <b>已完成 · 性能治理</b>
-            <p>设备探测 + 真实帧率采样输出三档，低档断开监听器与重型图层，系统减少动效优先。</p>
-          </div>
-          <div className={styles.rolloutStep}>
-            <b>已完成 · 星图首页</b>
-            <p>纯 SVG 观象盘 + 九门环绕，零 3D 依赖；移动端自动退化网格，键盘与读屏可用。</p>
-          </div>
-        </div>
-
-        <div className={styles.rules} data-reveal>
-          <h3>不可越线的四条</h3>
-          <ol>
-            <li>只动 <code>transform</code> 与 <code>opacity</code>，不碰 width / height / top / left。</li>
-            <li>文字类动效 150–300ms，禁止超过 400ms、禁止持续旋转与闪烁。</li>
-            <li>正文对比度 ≥ 7:1，<code>prefers-reduced-motion</code> 全量降级为静态。</li>
-            <li>动效必须引导、确认或叙事——关掉动效页面依然完整可读。</li>
-          </ol>
-        </div>
-      </section>
-
-      <footer className={styles.footer} data-reveal>
-        <p>朱玄 + 星图已落地正式站；此页保留方案对照、外观切换与性能诊断。</p>
+      <footer className={styles.footer}>
+        <p>朱玄 + 月纸已落地正式站；此页仅用于色谱与外观对照。</p>
         <div className={styles.footerLinks}>
           <Link href="/">返回首页</Link>
           <Link href="/history">查看问事录</Link>

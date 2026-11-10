@@ -15,7 +15,7 @@
   color: var(--c-text-2);
   background: var(--c-surface);
   border: 1px solid var(--c-line-2);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 6px 24px var(--c-shadow);
   transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
@@ -35,7 +35,7 @@
   border-radius: 12px;
   background: var(--c-surface);
   border: 1px solid var(--c-line-2);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 16px 44px var(--c-shadow);
   animation: panelIn 0.22s ease both;
 }
 

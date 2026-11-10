@@ -107,7 +107,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid var(--c-line);
-  background: radial-gradient(circle at 50% 40%, rgba(201, 167, 103, 0.08), transparent 70%);
+  background: radial-gradient(circle at 50% 40%, rgba(var(--c-accent-rgb), 0.08), transparent 70%);
 }
 
 .cupFigure img {
@@ -136,9 +136,9 @@
 .error {
   margin: 0;
   padding: 10px 12px;
-  border: 1px solid rgba(201, 72, 47, 0.45);
-  background: rgba(201, 72, 47, 0.08);
-  color: #e58e7c;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  color: var(--c-negative);
   font-size: 0.8125rem;
 }
 
@@ -156,12 +156,12 @@
   text-align: center;
   border: 1px solid var(--c-line);
   border-top: 2px solid var(--c-gold);
-  background: linear-gradient(180deg, rgba(201, 167, 103, 0.06), transparent 60%);
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.06), transparent 60%);
 }
 
 .result[data-outcome='yin'] {
   border-top-color: var(--c-cinnabar);
-  background: linear-gradient(180deg, rgba(201, 72, 47, 0.07), transparent 60%);
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.07), transparent 60%);
 }
 
 .outcome {
@@ -174,7 +174,7 @@
 }
 
 .result[data-outcome='yin'] .outcome {
-  color: #e58e7c;
+  color: var(--c-negative);
 }
 
 .meaning {
@@ -195,12 +195,12 @@
 .warn {
   margin: 0;
   padding: 14px 16px;
-  border: 1px solid rgba(201, 72, 47, 0.35);
-  background: rgba(201, 72, 47, 0.06);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+  background: rgba(var(--c-accent-rgb), 0.06);
   list-style: none;
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: #d99a8b;
+  color: var(--c-negative);
 }
 
 @media (max-width: 900px) {

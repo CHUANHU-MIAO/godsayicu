@@ -99,9 +99,9 @@
 .error {
   margin: 0 0 20px;
   padding: 10px 12px;
-  border: 1px solid rgba(212, 85, 60, 0.45);
-  background: rgba(212, 85, 60, 0.08);
-  color: #e58e7c;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  color: var(--c-negative);
   font-size: 0.8125rem;
 }
 
@@ -179,7 +179,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.62);
+  background: var(--c-scrim);
   backdrop-filter: blur(4px);
 }
 
@@ -243,8 +243,8 @@
 
 .movingBtn[data-active='true'] {
   border-color: var(--c-cinnabar);
-  color: #f0a48f;
-  background: rgba(212, 85, 60, 0.14);
+  color: var(--c-gold-bright);
+  background: rgba(var(--c-accent-rgb), 0.14);
 }
 
 .modalActions {

@@ -51,7 +51,7 @@
   width: 58px;
   height: 13px;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent);
+  background: radial-gradient(closest-side, var(--c-shadow), transparent);
   transform: translateX(-50%);
   filter: blur(1px);
 }

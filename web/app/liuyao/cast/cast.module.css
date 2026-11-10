@@ -44,8 +44,8 @@
   grid-template-columns: 0.92fr 1.08fr;
   border: 1px solid var(--c-line);
   background:
-    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(var(--c-accent-rgb), 0.07), transparent 70%),
-    linear-gradient(180deg, rgba(23, 22, 20, 0.9), rgba(15, 15, 14, 0.85));
+    radial-gradient(ellipse 70% 50% at 20% 0%, var(--c-glow), transparent 70%),
+    linear-gradient(180deg, var(--c-surface), var(--c-bg-2));
 }
 
 /* —— 左：铜钱 —— */
@@ -80,9 +80,9 @@
 .error {
   margin: 0;
   padding: 8px 12px;
-  border: 1px solid rgba(212, 85, 60, 0.45);
-  background: rgba(212, 85, 60, 0.08);
-  color: #e58e7c;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  color: var(--c-negative);
   font-size: 0.8125rem;
 }
 
@@ -171,7 +171,7 @@
 }
 
 .row[data-active='true'] {
-  background: rgba(122, 74, 52, 0.42);
+  background: var(--c-active-bg);
 }
 
 .pos {
@@ -201,11 +201,11 @@
 }
 
 .line[data-moving='true'] i {
-  background: #e8734a;
+  background: var(--c-gold);
 }
 
 .line[data-state='idle'] i {
-  background: #3c3931;
+  background: var(--c-idle-line);
 }
 
 .tag {

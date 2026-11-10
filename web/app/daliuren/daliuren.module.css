@@ -83,9 +83,9 @@
 .error {
   margin: 0;
   padding: 10px 12px;
-  border: 1px solid rgba(201, 72, 47, 0.45);
-  background: rgba(201, 72, 47, 0.08);
-  color: #e58e7c;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  color: var(--c-negative);
   font-size: 0.8125rem;
   line-height: 1.6;
 }
@@ -390,12 +390,12 @@
 .warn {
   margin: 0;
   padding: 14px 16px;
-  border: 1px solid rgba(201, 72, 47, 0.35);
-  background: rgba(201, 72, 47, 0.06);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+  background: rgba(var(--c-accent-rgb), 0.06);
   list-style: none;
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: #d99a8b;
+  color: var(--c-negative);
 }
 
 @media (max-width: 960px) {

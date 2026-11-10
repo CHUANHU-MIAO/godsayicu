@@ -3,7 +3,7 @@
   padding: 24px 20px;
   border: 1px solid var(--c-line);
   border-top: 2px solid var(--c-gold);
-  background: linear-gradient(180deg, rgba(201, 167, 103, 0.05), transparent 55%);
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.05), transparent 55%);
 }
 
 .head {
@@ -59,15 +59,15 @@
 .notice a {
   color: var(--c-gold);
   text-decoration: none;
-  border-bottom: 1px solid rgba(201, 167, 103, 0.4);
+  border-bottom: 1px solid rgba(var(--c-accent-rgb), 0.4);
 }
 
 .error {
   margin: 0 0 16px;
   padding: 10px 12px;
-  border: 1px solid rgba(201, 72, 47, 0.45);
-  background: rgba(201, 72, 47, 0.08);
-  color: #e58e7c;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  color: var(--c-negative);
   font-size: 0.8125rem;
   line-height: 1.6;
 }

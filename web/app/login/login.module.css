@@ -82,7 +82,7 @@
 
 .tab[data-active='true'] {
   color: var(--c-gold-bright);
-  background: rgba(201, 167, 103, 0.1);
+  background: rgba(var(--c-accent-rgb), 0.1);
 }
 
 .form {
@@ -94,9 +94,9 @@
 .error {
   margin: 0;
   padding: 10px 12px;
-  border: 1px solid rgba(201, 72, 47, 0.45);
-  background: rgba(201, 72, 47, 0.08);
-  color: #e58e7c;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  color: var(--c-negative);
   font-size: 0.8125rem;
   line-height: 1.6;
 }
