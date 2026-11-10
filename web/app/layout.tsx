@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import HistoryBridge from '@/components/history/HistoryBridge';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -11,7 +12,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body>
+        <HistoryBridge />
+        {children}
+      </body>
     </html>
   );
 }

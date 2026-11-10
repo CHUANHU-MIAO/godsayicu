@@ -20,7 +20,10 @@ export default function Home() {
     <main className={styles.home}>
       <div className={styles.atmosphere} aria-hidden="true" />
 
-      <nav className={styles.topbar} aria-label="账户">
+      <nav className={styles.topbar} aria-label="快捷入口">
+        <Link href="/history" className={styles.accountLink}>
+          记 录
+        </Link>
         <Link href="/account" className={styles.accountLink}>
           我 的
         </Link>
