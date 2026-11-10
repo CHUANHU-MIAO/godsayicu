@@ -51,27 +51,29 @@ function CoinSvg({
           <stop offset="0%" stopColor="#8c5c1a" />
           <stop offset="100%" stopColor="#3c2507" />
         </linearGradient>
-        {/* 方孔：凹陷 */}
-        <radialGradient id={holeId} cx="50%" cy="34%" r="78%">
-          <stop offset="0%" stopColor="#3a2810" />
-          <stop offset="100%" stopColor="#0f0902" />
-        </radialGradient>
+        {/* 方孔遮罩：把中央方孔真正镂空（透明），露出底层背景而非填黑 */}
+        <mask id={holeId}>
+          <rect x="0" y="0" width="100" height="100" fill="white" />
+          <rect x="36" y="36" width="28" height="28" rx="2" fill="black" />
+        </mask>
       </defs>
 
-      {/* 外缘立体边 */}
-      <circle cx="50" cy="50" r="49" fill={`url(#${rimId})`} stroke="#5f3f12" strokeWidth="1.4" />
-      {/* 钱体 */}
-      <circle cx="50" cy="50" r="44.5" fill={`url(#${bodyId})`} stroke="#8f6520" strokeWidth="0.8" />
-      {/* 内圈沟槽，分隔外缘与字面 */}
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#a3741d" strokeWidth="1.5" opacity="0.75" />
-      <circle cx="50" cy="50" r="38.4" fill="none" stroke="#f6dd92" strokeWidth="0.6" opacity="0.5" />
-      {/* 金属反光（左上高光） */}
-      <path d="M15 39 A42 42 0 0 1 39 15" fill="none" stroke="#fff7e0" strokeOpacity="0.42" strokeWidth="2.6" strokeLinecap="round" />
-      {/* 方孔：凹陷 + 内阴影 */}
-      <rect x="36" y="36" width="28" height="28" rx="2" fill={`url(#${holeId})`} stroke="#c79f48" strokeWidth="1.1" />
-      <rect x="36.6" y="36.6" width="26.8" height="26.8" rx="1.6" fill="none" stroke="#000" strokeOpacity="0.5" strokeWidth="1" />
+      <g mask={`url(#${holeId})`}>
+        {/* 外缘立体边 */}
+        <circle cx="50" cy="50" r="49" fill={`url(#${rimId})`} stroke="#5f3f12" strokeWidth="1.4" />
+        {/* 钱体 */}
+        <circle cx="50" cy="50" r="44.5" fill={`url(#${bodyId})`} stroke="#8f6520" strokeWidth="0.8" />
+        {/* 内圈沟槽，分隔外缘与字面 */}
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#a3741d" strokeWidth="1.5" opacity="0.75" />
+        <circle cx="50" cy="50" r="38.4" fill="none" stroke="#f6dd92" strokeWidth="0.6" opacity="0.5" />
+        {/* 金属反光（左上高光） */}
+        <path d="M15 39 A42 42 0 0 1 39 15" fill="none" stroke="#fff7e0" strokeOpacity="0.42" strokeWidth="2.6" strokeLinecap="round" />
 
-      {back ? (
+        {/* 方孔：镂空（透明），仅保留挖孔截面的斜面高光与暗线，呈现真实打穿的孔 */}
+        <rect x="35.8" y="35.8" width="28.4" height="28.4" rx="2.2" fill="none" stroke="#f6dd92" strokeWidth="0.9" opacity="0.55" />
+        <rect x="35.2" y="35.2" width="29.6" height="29.6" rx="2.6" fill="none" stroke="#5c3c10" strokeWidth="0.7" opacity="0.5" />
+
+        {back ? (
         <>
           {/* 背：素背，四决纹 + 中心圈 */}
           <path d="M43 16.5h4M57 16.5h4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
@@ -102,6 +104,7 @@ function CoinSvg({
           );
         })()
       )}
+      </g>
     </svg>
   );
 }
