@@ -43,37 +43,78 @@
 
 /* ============================================================
    观象 · 基础层
-   Design tokens / Reset / 排版基线 / 焦点 / 滚动条 / 工具类
+   朱玄（墨夜 + 朱砂）为默认暗色；提供对应亮色「月纸」。
+   --c-gold / --c-gold-bright 为历史变量名，现指主强调色（朱砂），
+   保留变量名以兼容既有组件，勿再按字面理解为金色。
    ============================================================ */
 
-:root {
-  /* —— 色彩 —— */
-  --c-bg: #0b0b0a;
-  --c-bg-2: #111110;
-  --c-surface: #151513;
-  --c-surface-2: #1a1a17;
-  --c-text: #f4efe5;
-  --c-text-2: #d6d0c3;
-  --c-text-3: #a9a294;
-  --c-gold: #d4b478;
-  --c-gold-bright: #f7dfae;
-  --c-cinnabar: #d4553c;
-  --c-jade: #7ba399;
-  --c-line: #332f28;
-  --c-line-2: #46413a;
+:root,
+:root[data-appearance='dark'] {
+  color-scheme: dark;
 
-  /* —— 字体 —— */
+  --c-bg: #0a0809;
+  --c-bg-2: #130f11;
+  --c-surface: #181214;
+  --c-surface-2: #201719;
+  --c-text: #f7f0ec;
+  --c-text-2: #ddd0c8;
+  --c-text-3: #b09d95;
+
+  --c-gold: #e0684f;
+  --c-gold-bright: #f6a58f;
+  --c-cinnabar: #e0684f;
+  --c-jade: #9fb8ae;
+
+  --c-line: #3a2a28;
+  --c-line-2: #574039;
+
+  --c-accent-rgb: 224, 104, 79;
+  --c-accent-bright-rgb: 246, 165, 143;
+  --c-surface-rgb: 24, 18, 20;
+  --c-bg-rgb: 10, 8, 9;
+  --c-jade-rgb: 159, 184, 174;
+  --c-glow: rgba(224, 104, 79, 0.1);
+  --c-glow-soft: rgba(159, 184, 174, 0.06);
+
+  /* 字体 */
   --serif: 'LXGW WenKai', 'Songti SC', 'STSong', serif;
   --sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
-  /* —— 字阶 —— */
+  /* 字阶 */
   --fs-display: clamp(2.75rem, 6vw, 4.25rem);
   --fs-title: clamp(1.75rem, 3.6vw, 2.5rem);
   --fs-h3: 1.375rem;
 }
 
+:root[data-appearance='light'] {
+  color-scheme: light;
+
+  --c-bg: #f7f3ee;
+  --c-bg-2: #efe8e0;
+  --c-surface: #fffdfa;
+  --c-surface-2: #f2ebe3;
+  --c-text: #221a17;
+  --c-text-2: #3f312b;
+  --c-text-3: #5a473f;
+
+  --c-gold: #b23f28;
+  --c-gold-bright: #8f2c18;
+  --c-cinnabar: #b23f28;
+  --c-jade: #3f6f63;
+
+  --c-line: #ddd0c2;
+  --c-line-2: #bda99a;
+
+  --c-accent-rgb: 178, 63, 40;
+  --c-accent-bright-rgb: 143, 44, 24;
+  --c-surface-rgb: 255, 253, 250;
+  --c-bg-rgb: 247, 243, 238;
+  --c-jade-rgb: 63, 111, 99;
+  --c-glow: rgba(178, 63, 40, 0.08);
+  --c-glow-soft: rgba(63, 111, 99, 0.05);
+}
+
 html {
-  color-scheme: dark;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scrollbar-color: var(--c-line-2) var(--c-bg);
@@ -99,6 +140,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 img,
@@ -148,7 +190,7 @@ h6 {
   letter-spacing: 0.04em;
 }
 
-/* —— 焦点：统一金色描边 —— */
+/* —— 焦点：统一朱砂描边 —— */
 :focus {
   outline: none;
 }
@@ -159,11 +201,11 @@ h6 {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--c-gold) 30%, transparent);
-  color: var(--c-gold-bright);
+  background: rgba(var(--c-accent-rgb), 0.26);
+  color: var(--c-text);
 }
 
-/* —— 暗色滚动条 —— */
+/* —— 滚动条 —— */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -207,28 +249,19 @@ h6 {
   background-image:
     radial-gradient(
       circle at 18% 8%,
-      color-mix(in srgb, var(--c-gold) 6%, transparent) 0%,
+      rgba(var(--c-accent-rgb), 0.07) 0%,
       transparent 40%
     ),
     radial-gradient(
       circle at 82% 24%,
-      color-mix(in srgb, var(--c-jade) 5%, transparent) 0%,
+      rgba(var(--c-jade-rgb), 0.06) 0%,
       transparent 44%
     ),
-    radial-gradient(
-      circle at 50% 100%,
-      color-mix(in srgb, var(--c-cinnabar) 4%, transparent) 0%,
-      transparent 55%
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      color-mix(in srgb, var(--c-surface-2) 55%, transparent) 0%,
-      transparent 72%
-    );
+    radial-gradient(circle at 50% 100%, var(--c-glow) 0%, transparent 55%);
   background-attachment: fixed;
 }
 
-/* 极细噪点：用重复 radial-gradient 模拟颗粒 */
+/* 极细噪点 */
 .bg-grain {
   position: relative;
   isolation: isolate;
@@ -242,11 +275,59 @@ h6 {
   pointer-events: none;
   opacity: 0.35;
   background-image: radial-gradient(
-    color-mix(in srgb, var(--c-text) 8%, transparent) 0.5px,
+    rgba(var(--c-accent-rgb), 0.09) 0.5px,
     transparent 0.5px
   );
   background-size: 4px 4px;
   mix-blend-mode: overlay;
+}
+
+/* ============================================================
+   动效治理：由性能探测写入 html[data-motion]
+   off   —— 全部动画/过渡关闭，重型图层不渲染
+   calm  —— 保留入场与悬停，关闭无限循环、视差、3D
+   full  —— 全部启用
+   组件可用 .motion-heavy / .motion-particle 标记重负载元素
+   ============================================================ */
+:root[data-motion='off'] *,
+:root[data-motion='off'] *::before,
+:root[data-motion='off'] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+:root[data-motion='off'] .motion-heavy,
+:root[data-motion='calm'] .motion-heavy {
+  animation: none !important;
+}
+
+:root[data-motion='off'] .motion-particle,
+:root[data-motion='calm'] .motion-particle {
+  display: none !important;
+}
+
+:root[data-motion='off'] .motion-parallax,
+:root[data-motion='calm'] .motion-parallax {
+  transform: none !important;
+}
+
+/* —— 系统偏好优先于一切 —— */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-heavy,
+  .motion-particle {
+    animation: none !important;
+    display: none !important;
+  }
 }
 
 /* —— 首页骨架（保留） —— */
@@ -264,7 +345,7 @@ h6 {
   font-size: var(--fs-display);
   font-weight: 400;
   letter-spacing: 0.28em;
-  color: var(--c-gold-bright);
+  color: var(--c-gold);
 }
 
 .boot-sub {
@@ -272,16 +353,4 @@ h6 {
   font-size: 0.9375rem;
   letter-spacing: 0.2em;
   color: var(--c-text-3);
-}
-
-/* —— 降低动态效果 —— */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
 }

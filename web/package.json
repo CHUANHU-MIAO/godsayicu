@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:win": "node scripts/build-win.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "verify": "node scripts/verify.mjs",

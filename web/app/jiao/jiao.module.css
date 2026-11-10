@@ -20,8 +20,8 @@
   padding: 34px 30px;
   border: 1px solid var(--c-line);
   background:
-    radial-gradient(ellipse 90% 55% at 50% 0%, rgba(212, 180, 120, 0.09), transparent 70%),
-    linear-gradient(180deg, rgba(21, 21, 19, 0.72), rgba(11, 11, 10, 0.45));
+    radial-gradient(ellipse 90% 55% at 50% 0%, rgba(var(--c-accent-rgb), 0.09), transparent 70%),
+    linear-gradient(180deg, rgba(var(--c-surface-rgb), 0.72), rgba(var(--c-bg-rgb), 0.45));
 }
 
 .placeholder {

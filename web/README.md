@@ -2,7 +2,7 @@
 
 中文术数文化学习平台。自研前端 + `taibu-core`（MIT）计算引擎 + 自研薄后端，闭源、可商用。
 
-- **前端**：Next.js 15（App Router）+ TypeScript + CSS Modules，暗色低照度视觉，字体全部本地托管，零外部请求
+- **前端**：Next.js 15（App Router）+ TypeScript + CSS Modules，朱玄 / 月纸双主题 + 性能自适应动效，字体全部本地托管，零外部请求
 - **计算**：`taibu-core@4.0.0`（MIT），15 个域全量接入，封装在 `lib/divination/`
 - **后端**：`app/api/`，PostgreSQL + Drizzle ORM + scrypt/JWT（HttpOnly Cookie）
 - **术数**：六爻、塔罗、紫微、大六壬、黄历、杯筊、八字、梅花、奇门（9 个页面）
@@ -21,7 +21,9 @@ cd C:\Users\Administrator\Desktop\wentian\web
 npm run dev
 ```
 
-访问 `http://localhost:3000`。设计改造测试页在 `/lab`。
+访问 `http://localhost:3000`。设计 / 性能方案台在 `/lab`，匿名排盘记录在 `/history`。
+
+`?appearance=light` / `?appearance=dark` 可强制预览某一主题（仅首屏生效，手动切换后自动失效）。
 
 ## 环境变量
 
@@ -48,21 +50,46 @@ npm run db:push       # 或直接把 schema 推到数据库
 | 命令 | 说明 |
 |---|---|
 | `npm run dev` | 开发服务器（3000） |
-| `npm run build` | 生产构建，`output: 'standalone'` |
-| `npm run start` | 启动生产构建 |
+| `npm run build` | 生产构建，`output: 'standalone'`（Linux / CI 用这条） |
+| `npm run build:win` | Windows 本机生产构建，见下方说明 |
+| `npm run start` | 仅本地临时预览；`output: 'standalone'` 下会有警告，生产请用 standalone 入口 |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run verify` | 顺序执行全术数域冒烟、六爻接入、天山遁回归 |
 | `npm run db:generate` / `db:push` / `db:studio` | Drizzle 迁移工具 |
 
 `verify` 由 `scripts/verify.mjs` 统一调度，不在 npm script 中使用 `&&` 串联，保证 Windows / Linux 行为一致。
 
+### Windows 本机构建的已知问题
+
+Next.js 15.5.x 在 Windows 上会在构建开始时打开 `.next/trace` 追加写流，随后 `cleanDistDir` 递归清空 `.next`，被占用文件无法删除，导致：
+
+```text
+uncaughtException [Error: EPERM: operation not permitted, open '...\web\.next\trace']
+```
+
+这是 Next.js 自身的写入顺序问题，**不是项目代码错误**。`.next/trace` 只是诊断数据，不参与任何产物；`npm run build:win` 通过 `scripts/build-win.mjs` 注入 `scripts/next-trace-noop.cjs`，把该写流替换为内存空写流，其余文件写入不变。Ubuntu / CI 请直接用 `npm run build`，无需该脚本。
+
+构建时会提示 `ESLint must be installed`，属非致命提示（当前未装 ESLint，类型检查由 `npm run typecheck` 承担），构建仍正常产出。
+
+## 外观与动效
+
+- **朱玄 / 月纸**：默认暗色为朱玄（墨夜 + 朱砂），`app/globals.css` 提供亮色「月纸」全套 token。组件颜色一律走 `--c-*` 变量（含 `--c-accent-rgb` 等 RGB 分量），禁止硬编码色值，否则亮暗切换会残留旧色。
+- **三态切换**：右下角悬浮按钮提供亮色 / 暗色 / 跟随系统；偏好存 `localStorage.wen.appearance`，`layout.tsx` 的内联脚本在首屏渲染前同步写入 `html[data-appearance]`，避免闪烁。
+- **性能自适应**：`lib/motion/governor.ts` 综合 CPU 核数、`deviceMemory`、网络有效性、省流量、触屏、DPR，并采样一次真实 rAF 帧率，输出 `off / calm / full` 写入 `html[data-motion]`。低档关闭全部动画、不绑定滚动/鼠标监听、不渲染粒子层；系统 `prefers-reduced-motion` 强制静态且不可手动覆盖。手动偏好存 `localStorage.wen.motion`，档位可在 `/lab` 性能面板查看与覆盖。
+- **星图首页**：`components/home/OrbitStage` 为纯 SVG + CSS 实现（24 刻度、八卦爻线、九门环绕），零 3D 依赖；`≤900px` 自动退化为卡片网格。
+- **方案台**：`/lab` 保留三套色谱、三种布局、动效库选型与性能诊断面板。
+
 ## 生产部署（Ubuntu）
 
 ```bash
 npm ci
 npm run build
-pm2 start npm --name wentian -- start
+cp -r public .next/standalone/          # standalone 产物不含 public
+cp -r .next/static .next/standalone/.next/
+pm2 start .next/standalone/server.js --name wentian
 ```
+
+`output: 'standalone'` 下不要用 `npm run start` 对外提供服务（Next 会告警且依赖不完整），入口是 `node .next/standalone/server.js`。
 
 Nginx 反代 3000，并对 `/api/ai/interpret` 关闭 `proxy_buffering`（SSE 流式输出）。经 Cloudflare 代理时同样需要对 SSE 路径关闭缓冲、放行 PayPal webhook。
 

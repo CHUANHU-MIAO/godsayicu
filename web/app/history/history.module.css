@@ -74,8 +74,8 @@
 
 .chipOn {
   color: var(--c-gold-bright);
-  border-color: rgba(212, 180, 120, 0.55);
-  background: rgba(212, 180, 120, 0.08);
+  border-color: rgba(var(--c-accent-rgb), 0.55);
+  background: rgba(var(--c-accent-rgb), 0.08);
 }
 
 .count {
@@ -136,7 +136,7 @@
   font-family: var(--serif);
   font-size: 0.875rem;
   color: var(--c-gold);
-  border: 1px solid rgba(212, 180, 120, 0.35);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
   border-radius: 4px;
   padding: 5px 10px;
   letter-spacing: 0.08em;

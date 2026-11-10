@@ -44,7 +44,7 @@
   grid-template-columns: 0.92fr 1.08fr;
   border: 1px solid var(--c-line);
   background:
-    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(212, 180, 120, 0.07), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(var(--c-accent-rgb), 0.07), transparent 70%),
     linear-gradient(180deg, rgba(23, 22, 20, 0.9), rgba(15, 15, 14, 0.85));
 }
 

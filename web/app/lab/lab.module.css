@@ -7,7 +7,6 @@
   color: var(--lab-text-2);
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
-  transition: background 0.5s ease, color 0.5s ease;
 }
 
 .aurora {
@@ -578,7 +577,9 @@
   border-radius: 50%;
   border: 1px solid var(--lab-accent);
   background: radial-gradient(circle at 50% 40%, var(--lab-glow), transparent 72%);
-  box-shadow: 0 0 0 22px rgba(127, 178, 255, 0.03), 0 0 0 44px rgba(127, 178, 255, 0.02);
+  box-shadow:
+    0 0 0 22px color-mix(in srgb, var(--lab-accent) 5%, transparent),
+    0 0 0 44px color-mix(in srgb, var(--lab-accent) 2%, transparent);
 }
 
 .wireNode {
@@ -1154,4 +1155,174 @@
     transition: none !important;
   }
   .lab [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
+
+/* ---------- 外观三态 ---------- */
+.appearanceBar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  border: 1px solid var(--lab-line);
+  border-radius: 10px;
+  background: var(--lab-surface);
+}
+
+.appearanceLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.28em;
+  color: var(--lab-accent);
+}
+
+.appearanceSwitch {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid var(--lab-line);
+  border-radius: 8px;
+  background: var(--lab-bg-2);
+}
+
+.appearanceNote {
+  font-size: 0.75rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--lab-text-3);
+}
+
+/* ---------- 性能治理面板 ---------- */
+.perfPanel {
+  padding: 24px;
+  margin-bottom: 22px;
+  border: 1px solid var(--lab-line-2);
+  border-radius: 12px;
+  background: var(--lab-surface);
+}
+
+.perfHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.perfHead .panelLabel { margin-bottom: 8px; }
+
+.perfLead {
+  max-width: 660px;
+  font-size: 0.8125rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--lab-text-2);
+}
+
+.perfTier {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--lab-accent);
+  color: var(--lab-accent);
+  background: var(--lab-surface-2);
+  white-space: nowrap;
+}
+
+.perfTier[data-tier='off'] {
+  border-color: var(--lab-line-2);
+  color: var(--lab-text-3);
+}
+
+.perfPanel .motionBar { margin-bottom: 16px; }
+
+.perfGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin: 4px 0 14px;
+}
+
+.perfItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--lab-line);
+  border-radius: 6px;
+  background: var(--lab-bg-2);
+  min-width: 0;
+}
+
+.perfItem span {
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--lab-text-3);
+}
+
+.perfItem b {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--lab-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.perfReasons {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.perfReasons li {
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  color: var(--lab-text-2);
+  border: 1px solid var(--lab-line);
+  border-radius: 999px;
+  padding: 5px 11px;
+  background: var(--lab-bg-2);
+}
+
+.perfFoot {
+  font-size: 0.75rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--lab-text-3);
+  margin-top: 12px;
+}
+
+.layoutLink {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.8125rem;
+  color: var(--lab-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+
+.layoutLink:hover { border-bottom-color: var(--lab-accent); }
+
+/* ---------- 亮色适配 ---------- */
+/* 月纸底为高亮暖白，任何噪点 / multiply 叠加都会压成灰底并吃掉文字锐度，亮色下直接移除 */
+.lab[data-appearance='light'] .grain { display: none; }
+
+.lab[data-appearance='light'] .aurora { opacity: 0.38; }
+
+.lab[data-appearance='light'] .pass { color: #2f7a55; }
+
+@media (max-width: 900px) {
+  .perfHead { flex-direction: column; }
+  .perfGrid { grid-template-columns: repeat(3, 1fr); }
+  .appearanceBar { gap: 12px; }
+}
+
+@media (max-width: 560px) {
+  .perfGrid { grid-template-columns: repeat(2, 1fr); }
+  .perfPanel { padding: 18px; }
 }
