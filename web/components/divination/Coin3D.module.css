@@ -2,15 +2,15 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 26px;
-  padding: 26px 0 34px;
+  gap: 34px;
+  padding: 26px 0 38px;
   perspective: 900px;
 }
 
 .slot {
   position: relative;
-  width: 76px;
-  height: 76px;
+  width: 94px;
+  height: 94px;
 }
 
 .coin {
@@ -47,9 +47,9 @@
 .shadow {
   position: absolute;
   left: 50%;
-  bottom: -14px;
-  width: 58px;
-  height: 13px;
+  bottom: -16px;
+  width: 70px;
+  height: 15px;
   border-radius: 50%;
   background: radial-gradient(closest-side, var(--c-shadow), transparent);
   transform: translateX(-50%);
@@ -58,16 +58,16 @@
 
 @media (max-width: 520px) {
   .stage {
-    gap: 16px;
+    gap: 18px;
   }
 
   .slot {
-    width: 62px;
-    height: 62px;
+    width: 76px;
+    height: 76px;
   }
 
   .shadow {
-    width: 46px;
+    width: 56px;
   }
 }
 

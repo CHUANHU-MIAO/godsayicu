@@ -5,35 +5,61 @@ import styles from './Coin3D.module.css';
 
 export type CoinFace = 0 | 1; // 1 = 背，0 = 字
 
-const DUR = 900;
-const STAGGER = 160;
+const DUR = 950;
+const STAGGER = 150;
 
-function CoinSvg({ back, id }: { back: boolean; id: string }) {
+/** 三枚铜钱：乾隆通宝 / 道光通宝 / 嘉庆通宝 —— 乾道嘉谐音「钱到家」 */
+const COIN_REIGNS: [string, string, string, string][] = [
+  ['乾', '隆', '通', '宝'],
+  ['道', '光', '通', '宝'],
+  ['嘉', '庆', '通', '宝'],
+];
+
+function CoinSvg({
+  reign,
+  back,
+  id,
+}: {
+  reign: [string, string, string, string];
+  back: boolean;
+  id: string;
+}) {
+  const [top, right, bottom, left] = reign;
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <defs>
-        <radialGradient id={id} cx="36%" cy="30%" r="74%">
-          <stop offset="0%" stopColor="#f2ddb0" />
-          <stop offset="44%" stopColor="#cba55e" />
-          <stop offset="100%" stopColor="#87672c" />
+        <radialGradient id={id} cx="38%" cy="30%" r="78%">
+          <stop offset="0%" stopColor="#fff5d2" />
+          <stop offset="34%" stopColor="#f6cf6f" />
+          <stop offset="70%" stopColor="#dba136" />
+          <stop offset="100%" stopColor="#9c6a1d" />
         </radialGradient>
       </defs>
-      <circle cx="50" cy="50" r="48" fill={`url(#${id})`} stroke="#6d5222" strokeWidth="1.4" />
-      <circle cx="50" cy="50" r="42" fill="none" stroke="#7d5f27" strokeWidth="0.9" opacity="0.72" />
-      <rect x="36" y="36" width="28" height="28" fill="#241d14" stroke="#6d5222" strokeWidth="1.2" />
+
+      {/* 钱体：偏金的暖金渐变 */}
+      <circle cx="50" cy="50" r="48" fill={`url(#${id})`} stroke="#8a5a1b" strokeWidth="1.5" />
+      <circle cx="50" cy="50" r="43" fill="none" stroke="#e7c478" strokeWidth="0.8" opacity="0.85" />
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#9c6c22" strokeWidth="0.7" opacity="0.6" />
+
+      {/* 方孔 */}
+      <rect x="36" y="36" width="28" height="28" rx="1.5" fill="#2e2010" stroke="#7d521a" strokeWidth="1.3" />
+
       {back ? (
         <>
-          <path d="M43 17h5M52 17h5" stroke="#6d5222" strokeWidth="1.7" strokeLinecap="round" />
-          <path d="M43 83h5M52 83h5" stroke="#6d5222" strokeWidth="1.7" strokeLinecap="round" />
-          <path d="M17 43v5M17 52v5" stroke="#6d5222" strokeWidth="1.7" strokeLinecap="round" />
-          <path d="M83 43v5M83 52v5" stroke="#6d5222" strokeWidth="1.7" strokeLinecap="round" />
+          {/* 背：素背，四决纹 */}
+          <path d="M43 17h4M57 17h4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M43 83h4M57 83h4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M17 43v4M17 57v4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M83 43v4M83 57v4" stroke="#7d521a" strokeWidth="1.8" strokeLinecap="round" />
+          <circle cx="50" cy="50" r="20" fill="none" stroke="#7d521a" strokeWidth="0.9" opacity="0.5" />
         </>
       ) : (
         <>
-          <text x="50" y="31.5" textAnchor="middle" fontSize="9.5" fill="#5a4116">乾</text>
-          <text x="50" y="77.5" textAnchor="middle" fontSize="9.5" fill="#5a4116">隆</text>
-          <text x="25" y="54" textAnchor="middle" fontSize="9.5" fill="#5a4116">通</text>
-          <text x="75" y="54" textAnchor="middle" fontSize="9.5" fill="#5a4116">宝</text>
+          {/* 字：年号 + 通宝，上·右·下·左 */}
+          <text x="50" y="28" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{top}</text>
+          <text x="73.5" y="54" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{right}</text>
+          <text x="50" y="80" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{bottom}</text>
+          <text x="26.5" y="54" textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#5b3d12">{left}</text>
         </>
       )}
     </svg>
@@ -104,11 +130,11 @@ export default function Coin3D({
       coin.animate(
         [
           { transform: 'translateY(0px)', offset: 0, easing: 'cubic-bezier(.4,0,.7,1)' },
-          { transform: 'translateY(11px)', offset: 0.11, easing: 'cubic-bezier(.18,.72,.3,1)' },
-          { transform: 'translateY(-62px)', offset: 0.43, easing: 'cubic-bezier(.5,.05,.86,.45)' },
-          { transform: 'translateY(-9px)', offset: 0.66, easing: 'cubic-bezier(.3,.55,.36,1)' },
-          { transform: 'translateY(4px)', offset: 0.79, easing: 'cubic-bezier(.3,1.45,.5,1)' },
-          { transform: 'translateY(-11px)', offset: 0.87, easing: 'cubic-bezier(.4,0,.6,1)' },
+          { transform: 'translateY(12px)', offset: 0.1, easing: 'cubic-bezier(.18,.72,.3,1)' },
+          { transform: 'translateY(-78px)', offset: 0.42, easing: 'cubic-bezier(.5,.05,.86,.45)' },
+          { transform: 'translateY(-12px)', offset: 0.65, easing: 'cubic-bezier(.3,.55,.36,1)' },
+          { transform: 'translateY(5px)', offset: 0.79, easing: 'cubic-bezier(.3,1.45,.5,1)' },
+          { transform: 'translateY(-13px)', offset: 0.87, easing: 'cubic-bezier(.4,0,.6,1)' },
           { transform: 'translateY(2px)', offset: 0.94, easing: 'cubic-bezier(.3,1.2,.5,1)' },
           { transform: 'translateY(0px)', offset: 1 },
         ],
@@ -152,10 +178,10 @@ export default function Coin3D({
           <div ref={coinRefs[index]} className={styles.coin}>
             <div ref={innerRefs[index]} className={styles.inner}>
               <span className={`${styles.side} ${styles.front}`}>
-                <CoinSvg back={false} id={`coin-f-${index}`} />
+                <CoinSvg reign={COIN_REIGNS[index]} back={false} id={`coin-f-${index}`} />
               </span>
               <span className={`${styles.side} ${styles.back}`}>
-                <CoinSvg back id={`coin-b-${index}`} />
+                <CoinSvg reign={COIN_REIGNS[index]} back id={`coin-b-${index}`} />
               </span>
             </div>
           </div>
