@@ -45,6 +45,8 @@ jobs:
         working-directory: web
         run: |
           test -f .next/standalone/server.js
+          # taibu-core uses createRequire(import.meta.url); nft may miss those deps
+          node scripts/complete-standalone-deps.cjs
           mkdir -p .next/standalone/public .next/standalone/.next/static
           cp -r public/. .next/standalone/public/
           cp -r .next/static/. .next/standalone/.next/static/
