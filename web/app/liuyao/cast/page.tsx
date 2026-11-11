@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui';
+import { Button, Disclaimer, TermTip } from '@/components/ui';
 import Coin3D, { type CoinFace } from '@/components/divination/Coin3D';
+import HistoryDrawer from '@/components/history/HistoryDrawer';
+import { LIUYAO_TERMS } from '@/lib/divination/liuyao-terms';
 import styles from './cast.module.css';
 
 const POSITIONS = ['初', '二', '三', '四', '五', '上'];
@@ -87,6 +89,9 @@ export default function LiuyaoCastPage() {
 
   function handleToss() {
     if (tossing || submitting || tossed.length >= 6) return;
+    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+      navigator.vibrate(50);
+    }
     const toss = tossCoins();
     pendingRef.current = { value: toss.value };
     setFaces(toss.faces);
@@ -127,6 +132,10 @@ export default function LiuyaoCastPage() {
       <header className={styles.head}>
         <h1 className={styles.title}>铜钱起卦</h1>
         <p className={styles.sub}>乾隆通宝、道光通宝、嘉庆通宝三枚，逐爻抛掷，自下而上成卦。</p>
+        <div className={styles.headTools}>
+          <TermTip terms={LIUYAO_TERMS} label="术语说明" />
+          <HistoryDrawer domain="liuyao" />
+        </div>
       </header>
 
       <section className={styles.card}>
@@ -155,6 +164,15 @@ export default function LiuyaoCastPage() {
             {buttonText}
           </Button>
 
+          <button
+            type="button"
+            className={styles.shake}
+            onClick={handleToss}
+            disabled={tossing || submitting || done >= 6}
+          >
+            摇一摇 · 同样抛掷一次
+          </button>
+
           {done >= 6 && submitting ? (
             <p className={styles.casting}>
               <span className={styles.bars} aria-hidden="true">
@@ -170,6 +188,24 @@ export default function LiuyaoCastPage() {
             <span className={styles.rightTitle}>卦象</span>
             <span className={styles.count}>已掷 {done} / 6</span>
           </div>
+
+          <div className={styles.progress} aria-label={`已掷 ${done} / 6`}>
+            {POSITIONS.map((pos, index) => (
+              <span
+                key={pos}
+                className={styles.progressCell}
+                data-done={index < done || undefined}
+                data-current={index === done && !submitting || undefined}
+                title={`${pos}爻`}
+              />
+            ))}
+          </div>
+
+          <p className={styles.nextHint}>
+            {done < 6
+              ? `下一掷 · ${POSITIONS[done]}爻（第 ${done + 1} / 6 掷）`
+              : '六爻已齐，正在排盘'}
+          </p>
 
           <ol className={styles.lines}>
             {[5, 4, 3, 2, 1, 0].map((index) => {
@@ -221,8 +257,22 @@ export default function LiuyaoCastPage() {
           <p className={styles.hint}>
             第一掷为初爻，自下而上。重为老阳 ○、交为老阴 ×，二者为动爻。
           </p>
+
+          <p className={styles.rule}>
+            口径：三枚铜钱各掷一次为一爻，共六掷；三背为老阳、三字为老阴，其余为静爻。
+          </p>
+
+          <div className={styles.rightTools}>
+            <TermTip
+              terms={LIUYAO_TERMS}
+              label="本页术语"
+              description="起卦与排盘中出现的传统术语释义，仅供文化学习参考。"
+            />
+          </div>
         </div>
       </section>
+
+      <Disclaimer compact />
     </main>
   );
 }

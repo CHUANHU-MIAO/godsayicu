@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button, Card, Field } from '@/components/ui';
+import { Button, Card, Disclaimer, Field, TermTip } from '@/components/ui';
+import HistoryDrawer from '@/components/history/HistoryDrawer';
 import { HEXAGRAM_LIST } from '@/lib/data/hexagram-list';
+import { LIUYAO_TERMS } from '@/lib/divination/liuyao-terms';
 import styles from './liuyao.module.css';
 
 const TARGETS = [
@@ -125,6 +127,18 @@ export default function LiuyaoEntryPage() {
     submit(values);
   }
 
+  const pickedCode = HEXAGRAM_LIST.find(([name]) => name === hexName)?.[1] ?? '111111';
+  const changedCode = pickedCode
+    .split('')
+    .map((char, index) => (moving.includes(index + 1) ? (char === '1' ? '0' : '1') : char))
+    .join('');
+  const changedHexName = moving.length
+    ? HEXAGRAM_LIST.find(([, code]) => code === changedCode)?.[0] ?? '—'
+    : null;
+  const movingText = moving.length
+    ? moving.map((position) => POSITIONS[position - 1]).join('、')
+    : '—';
+
   return (
     <main className={styles.page}>
       <Link href="/" className={styles.back}>
@@ -134,6 +148,10 @@ export default function LiuyaoEntryPage() {
       <header className={styles.head}>
         <h1 className={styles.title}>六爻占卜</h1>
         <p className={styles.sub}>源自《易经》。一事一占，先想清楚要问什么。</p>
+        <div className={styles.headTools}>
+          <TermTip terms={LIUYAO_TERMS} label="术语说明" />
+          <HistoryDrawer domain="liuyao" />
+        </div>
       </header>
 
       <Card variant="outline" className={styles.panel}>
@@ -205,6 +223,21 @@ export default function LiuyaoEntryPage() {
         </button>
       </div>
 
+      <details className={styles.guide}>
+        <summary>
+          起卦前须知
+          <em>展开阅读</em>
+        </summary>
+        <ol>
+          <li>一事一占：先想清楚要问什么，同一问题不反复起卦，心念专一才有参照价值。</li>
+          <li>
+            三枚铜钱：字为阴、背为阳。三背为「重」（老阳 ○）、三字为「交」（老阴 ×），二者为动爻。
+          </li>
+          <li>自下而上：第一掷为初爻，第六掷为上爻；动爻阴阳互变之后的卦称为变卦。</li>
+          <li>选填的所问之事与分析目标，会一并带入排盘，用来确定取哪一类用神。</li>
+        </ol>
+      </details>
+
       {picking ? (
         <div className={styles.modal} role="dialog" aria-modal="true" aria-label="选择卦象">
           <div className={styles.modalPanel}>
@@ -246,6 +279,18 @@ export default function LiuyaoEntryPage() {
               })}
             </div>
 
+            <div className={styles.preview}>
+              <span className={styles.previewLabel}>实时预览 · 本卦之变卦</span>
+              <div className={styles.previewNames}>
+                <strong>{hexName}</strong>
+                <span className={styles.previewArrow}>之</span>
+                <strong>{changedHexName ?? '无动爻'}</strong>
+              </div>
+              <span className={styles.previewNote}>
+                动爻 {moving.length} 处 · {movingText} 爻 · 自下而上
+              </span>
+            </div>
+
             <div className={styles.modalActions}>
               <Button variant="ghost" size="md" onClick={() => setPicking(false)}>
                 取消
@@ -257,6 +302,8 @@ export default function LiuyaoEntryPage() {
           </div>
         </div>
       ) : null}
+
+      <Disclaimer />
     </main>
   );
 }

@@ -20,6 +20,12 @@ build/
 .screenshots/
 .workbuddy/
 
+# 第三方源码：taibu 上游为 AGPL-3.0-only，仅本地对照研究，绝不入库
+taibu-master/
+
+# 本机专用启动脚本（硬编码本机 Node 路径，换机不可用）
+启动开发.bat
+
 # 系统文件
 .DS_Store
 Thumbs.db

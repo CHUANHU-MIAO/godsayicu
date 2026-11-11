@@ -537,3 +537,36 @@
     padding: 22px 14px 52px;
   }
 }
+
+/* —— 增量：页头工具、神煞展开、移动端固定操作栏留白 —— */
+.headTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.more {
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--c-cinnabar);
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.more:hover,
+.more:focus-visible {
+  color: var(--c-gold-bright);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  outline: none;
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding-bottom: 100px;
+  }
+}

@@ -222,6 +222,94 @@
   color: var(--c-text-3);
 }
 
+/* —— 增量：页头工具、进度条、口径说明、快捷抛掷 —— */
+.headTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.shake {
+  padding: 6px 12px;
+  border: var(--ds-hairline, 0.5px) dashed var(--c-line-2);
+  border-radius: var(--ds-r-control, 6px);
+  background: transparent;
+  color: var(--c-text-3);
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.shake:hover:not(:disabled),
+.shake:focus-visible {
+  border-color: var(--c-gold);
+  color: var(--c-gold-bright);
+  outline: none;
+}
+
+.shake:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.progressCell {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--c-idle-line);
+  transition: background-color 250ms ease;
+}
+
+.progressCell[data-done='true'] {
+  background: var(--c-gold);
+}
+
+.progressCell[data-current='true'] {
+  background: var(--c-gold-bright);
+  animation: cellPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes cellPulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.nextHint {
+  margin: -8px 0 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--c-text-3);
+}
+
+.rule {
+  margin: 0;
+  padding-top: 10px;
+  border-top: var(--ds-hairline, 0.5px) solid var(--c-line);
+  font-size: 0.6875rem;
+  line-height: 1.8;
+  color: var(--c-text-3);
+}
+
+.rightTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressCell[data-current='true'] {
+    animation: none;
+  }
+}
+
 @media (max-width: 860px) {
   .page {
     padding: 28px 20px 60px;

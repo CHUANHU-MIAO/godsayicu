@@ -3,8 +3,11 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import InterpretPanel from '@/components/interpret/InterpretPanel';
+import { Disclaimer, ResultActions, StatePanel, TermTip, Toast } from '@/components/ui';
+import HistoryDrawer from '@/components/history/HistoryDrawer';
 import { buildLiuyaoReading, type ReadingPayload } from '@/lib/divination/liuyao-reading';
 import { buildFortune, buildSynthesis, buildVerdict } from '@/lib/divination/liuyao-verdict';
+import { LIUYAO_TERMS } from '@/lib/divination/liuyao-terms';
 import styles from './result.module.css';
 
 interface Yao {
@@ -87,6 +90,9 @@ function MiniLine({ yin, tone }: { yin: boolean; tone: 'solid' | 'moving' | 'idl
 export default function LiuyaoResultPage() {
   const [result, setResult] = useState<Result | null>(null);
   const [missing, setMissing] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const [termsOpen, setTermsOpen] = useState(false);
+  const [expandedShenSha, setExpandedShenSha] = useState<number[]>([]);
 
   useEffect(() => {
     const raw = sessionStorage.getItem('wen.liuyao.result');
@@ -104,10 +110,16 @@ export default function LiuyaoResultPage() {
   if (missing) {
     return (
       <main className={styles.page}>
-        <p className={styles.empty}>尚无卦象</p>
-        <Link href="/liuyao" className={styles.back}>
-          前往起卦 →
-        </Link>
+        <StatePanel
+          state="empty"
+          title="尚无卦象"
+          description="请先完成一次起卦，排盘结果会显示在这里。"
+          action={
+            <Link href="/liuyao" className={styles.back}>
+              前往起卦 →
+            </Link>
+          }
+        />
       </main>
     );
   }
@@ -115,7 +127,7 @@ export default function LiuyaoResultPage() {
   if (!result) {
     return (
       <main className={styles.page}>
-        <p className={styles.empty}>载入中…</p>
+        <StatePanel state="loading" title="载入中…" skeletonRows={4} />
       </main>
     );
   }
@@ -138,11 +150,134 @@ export default function LiuyaoResultPage() {
     { key: 'hour', label: '时' },
   ] as const;
 
+  /** 把本页全部可见信息整理为纯文本，供「复制全文」使用 */
+  function buildPlainText(): string {
+    const lines: string[] = [];
+    lines.push(
+      `六爻 · ${payload.hexagramName}${payload.changedHexagramName ? ` 之 ${payload.changedHexagramName}` : ''}`,
+    );
+    lines.push(
+      `${payload.hexagramGong}宫 · ${payload.hexagramElement}${
+        payload.changedHexagramName
+          ? `　→　${payload.changedHexagramGong ?? ''}宫 · ${payload.changedHexagramElement ?? ''}`
+          : ''
+      }`,
+    );
+    if (payload.question) lines.push(`所问：${payload.question}`);
+    if (payload.ganZhiTime) {
+      const gz = payload.ganZhiTime;
+      lines.push(
+        `四柱：${pillars
+          .map((item) => `${item.label} ${gz[item.key]?.gan ?? ''}${gz[item.key]?.zhi ?? ''}`)
+          .join('　')}`,
+      );
+    }
+    lines.push('');
+    lines.push('六爻详表（自上而下）：');
+    yaos.forEach((yao) => {
+      lines.push(
+        [
+          yaoName(yao.position, yao.type),
+          yao.liuShen ?? '—',
+          `${yao.liuQin ?? '—'} ${yao.naJia ?? ''}${yao.wuXing ?? ''}`,
+          yao.isShiYao ? '世' : '',
+          yao.isYingYao ? '应' : '',
+          yao.kongWangState === 'kong' ? '旬空' : '',
+          yao.isChanging ? '动爻' : '',
+          yao.shenSha?.length ? yao.shenSha.join(' ') : '',
+        ]
+          .filter(Boolean)
+          .join('　'),
+      );
+    });
+    lines.push(
+      `互卦 ${payload.nuclearHexagram?.name ?? '—'}　错卦 ${payload.oppositeHexagram?.name ?? '—'}　综卦 ${payload.reversedHexagram?.name ?? '—'}`,
+    );
+    if (verdict) {
+      lines.push('');
+      lines.push(`用神断（辅）：${verdict.text} · 用神 ${verdict.target}`);
+      verdict.notes.forEach((note) => lines.push(`　${note}`));
+    }
+    if (fortune) {
+      lines.push('');
+      lines.push('卦象总断（主）');
+      if (synthesis) lines.push(`合参：${synthesis.text}`);
+      if (fortune.total) lines.push(`总断：${fortune.total}`);
+      fortune.items.forEach(([name, text]) => lines.push(`${name}：${text}`));
+    }
+    if (payload.guaCi) {
+      lines.push('');
+      lines.push(`卦辞 · ${payload.hexagramName}：${payload.guaCi}`);
+      if (payload.xiangCi) lines.push(`象辞：${payload.xiangCi}`);
+    }
+    if (payload.changedGuaCi) {
+      lines.push(`变卦 · ${payload.changedHexagramName ?? ''}：${payload.changedGuaCi}`);
+    }
+    if (reading.length > 0) {
+      lines.push('');
+      lines.push('基础解读');
+      reading.forEach((section) => {
+        lines.push(`【${section.title}】`);
+        section.paragraphs.forEach((text) => lines.push(text));
+        section.notes?.forEach((note) => lines.push(`· ${note}`));
+      });
+    }
+    const warnings = result?.warnings ?? [];
+    if (warnings.length) {
+      lines.push('');
+      lines.push('提示');
+      warnings.forEach((item) => lines.push(`· ${item}`));
+    }
+    lines.push('');
+    lines.push('内容仅供传统术数文化学习参考，不构成决策建议。');
+    return lines.join('\n');
+  }
+
+  async function copyAll() {
+    try {
+      await navigator.clipboard.writeText(buildPlainText());
+      setToast('排盘全文已复制');
+    } catch {
+      setToast('复制未成功，请手动选取文字');
+    }
+  }
+
   return (
     <main className={styles.page}>
       <Link href="/liuyao" className={styles.back}>
         ← 重新起卦
       </Link>
+
+      <ResultActions
+        caption="排盘完成 · 可复制留存或查阅术语"
+        items={[
+          {
+            key: 'copy',
+            label: '复制全文',
+            hint: '把本页排盘内容复制为纯文本',
+            onClick: copyAll,
+            primary: true,
+          },
+          {
+            key: 'terms',
+            label: '术语说明',
+            hint: '查看六爻术语释义',
+            onClick: () => setTermsOpen(true),
+          },
+          {
+            key: 'history',
+            label: '问事录',
+            hint: '查看本机留存的全部记录',
+            href: '/history',
+          },
+          {
+            key: 'again',
+            label: '重新起卦',
+            hint: '回到六爻入口',
+            href: '/liuyao',
+          },
+        ]}
+      />
 
       <div className={styles.layout}>
         {/* ================= 左：排盘 ================= */}
@@ -160,6 +295,9 @@ export default function LiuyaoResultPage() {
                 ? `　→　${payload.changedHexagramGong ?? ''}宫 · ${payload.changedHexagramElement ?? ''}`
                 : ''}
             </p>
+            <div className={styles.headTools}>
+              <HistoryDrawer domain="liuyao" />
+            </div>
           </header>
 
           {payload.ganZhiTime ? (
@@ -228,8 +366,28 @@ export default function LiuyaoResultPage() {
                   <span className={styles.cellShenSha}>
                     {shenSha.length > 0 ? (
                       <>
-                        {shenSha.slice(0, 2).join(' ')}
-                        {shenSha.length > 2 ? <em> +{shenSha.length - 2}</em> : null}
+                        {(expandedShenSha.includes(yao.position)
+                          ? shenSha
+                          : shenSha.slice(0, 2)
+                        ).join(' ')}
+                        {shenSha.length > 2 ? (
+                          <button
+                            type="button"
+                            className={styles.more}
+                            aria-expanded={expandedShenSha.includes(yao.position)}
+                            onClick={() =>
+                              setExpandedShenSha((prev) =>
+                                prev.includes(yao.position)
+                                  ? prev.filter((item) => item !== yao.position)
+                                  : [...prev, yao.position],
+                              )
+                            }
+                          >
+                            {expandedShenSha.includes(yao.position)
+                              ? ' 收起'
+                              : ` +${shenSha.length - 2}`}
+                          </button>
+                        ) : null}
                       </>
                     ) : (
                       '—'
@@ -353,6 +511,16 @@ export default function LiuyaoResultPage() {
           ) : null}
         </div>
       </div>
+
+      <Disclaimer />
+      <TermTip
+        terms={LIUYAO_TERMS}
+        hideTrigger
+        open={termsOpen}
+        onOpenChange={setTermsOpen}
+        title="六爻术语说明"
+      />
+      <Toast message={toast} onDismiss={() => setToast(null)} />
     </main>
   );
 }

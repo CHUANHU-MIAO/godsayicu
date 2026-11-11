@@ -254,6 +254,108 @@
   margin-top: 4px;
 }
 
+/* —— 增量：页头工具、折叠须知、选卦实时预览 —— */
+.headTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.guide {
+  margin: 22px 0 0;
+  padding: 14px 18px;
+  border: var(--ds-hairline, 0.5px) solid var(--c-line);
+  border-radius: var(--ds-r-row, 8px);
+  background: var(--c-subtle);
+}
+
+.guide summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  color: var(--c-text-2);
+  cursor: pointer;
+  list-style: none;
+}
+
+.guide summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide summary em {
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--c-text-3);
+}
+
+.guide[open] summary em {
+  color: var(--c-gold);
+}
+
+.guide ol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding-left: 1.25em;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--c-text-3);
+}
+
+.guide li::marker {
+  color: var(--c-gold);
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border: var(--ds-hairline, 0.5px) solid var(--c-line);
+  border-radius: var(--ds-r-row, 8px);
+  background: var(--c-subtle);
+}
+
+.previewLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--c-text-3);
+}
+
+.previewNames {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.previewNames strong {
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--c-gold-bright);
+}
+
+.previewArrow {
+  font-size: 0.75rem;
+  color: var(--c-text-3);
+}
+
+.previewNote {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--c-text-3);
+}
+
 @media (max-width: 860px) {
   .page {
     padding: 28px 20px 64px;

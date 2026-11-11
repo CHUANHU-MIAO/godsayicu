@@ -1,0 +1,23 @@
+.note {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 28px 0 0;
+  padding-top: 14px;
+  border-top: var(--ds-hairline, 0.5px) solid var(--c-line);
+  font-size: 0.6875rem;
+  line-height: 1.85;
+  letter-spacing: 0.06em;
+  color: var(--c-text-3);
+}
+
+.mark {
+  flex: none;
+  color: var(--c-gold);
+  font-size: 0.75rem;
+}
+
+.compact {
+  margin-top: 16px;
+  padding-top: 10px;
+}
