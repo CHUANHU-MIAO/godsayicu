@@ -58,10 +58,29 @@ fi
 DEST="$RELEASE_DIR/${SHA:0:12}"
 
 echo '==> 2/6 download bundle'
-curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
-  -H "Accept: application/octet-stream" \
-  "$DL_URL" -o "$WORK/bundle.tar.gz"
-tar tzf "$WORK/bundle.tar.gz" >/dev/null
+BUNDLE="$WORK/bundle.tar.gz"
+DOWNLOAD_OK=0
+for i in 1 2 3 4 5; do
+  echo "download attempt $i / 5"
+  if curl -fL --retry 3 --retry-delay 2 --retry-all-errors \
+      --connect-timeout 15 --max-time 300 \
+      -H "Authorization: Bearer $GH_TOKEN" \
+      -H "Accept: application/octet-stream" \
+      "$DL_URL" -o "$BUNDLE"; then
+    if tar tzf "$BUNDLE" >/dev/null 2>&1; then
+      DOWNLOAD_OK=1
+      break
+    fi
+    echo 'archive incomplete, retrying'
+  fi
+  rm -f "$BUNDLE"
+  sleep 3
+done
+if [ "$DOWNLOAD_OK" != '1' ]; then
+  echo 'ERROR: bundle download failed after 5 attempts'
+  echo 'HINT: the redirect target objects.githubusercontent.com may be blocked here'
+  exit 1
+fi
 
 echo "==> 3/6 unpack to $DEST"
 mkdir -p "$RELEASE_DIR" "$LOG_DIR"
