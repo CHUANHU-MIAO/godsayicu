@@ -64,7 +64,7 @@ export default function LookPreviewPage() {
 
       <header className={styles.head}>
         <h1 className={styles.title}>抽 牌</h1>
-        <p className={styles.sub}>七十八张，观象取意。以结构参数复刻的界面语言样板。</p>
+        <p className={styles.sub}>七十八张，取象会意。以结构参数复刻的界面语言样板。</p>
       </header>
 
       <div className={styles.stack}>

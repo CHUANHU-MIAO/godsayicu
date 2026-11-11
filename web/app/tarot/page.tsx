@@ -82,7 +82,7 @@ export default function TarotPage() {
       <header className={styles.head}>
         <p className={styles.eyebrow}>塔罗 · 韦特体系</p>
         <h1 className={styles.title}>抽 牌</h1>
-        <p className={styles.sub}>七十八张，观象取意</p>
+        <p className={styles.sub}>七十八张，取象会意</p>
       </header>
 
       <div className={styles.layout}>

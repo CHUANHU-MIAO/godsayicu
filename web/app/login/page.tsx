@@ -57,7 +57,7 @@ export default function LoginPage() {
       </Link>
 
       <header className={styles.head}>
-        <p className={styles.eyebrow}>观象 · 问天</p>
+        <p className={styles.eyebrow}>一念归静 · 万理昭明</p>
         <h1 className={styles.title}>{mode === 'login' ? '登 录' : '注 册'}</h1>
         <p className={styles.sub}>
           {mode === 'login' ? '以邮箱登录，查看记录与额度' : '注册即赠 3 次解读额度'}

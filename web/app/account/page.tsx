@@ -95,7 +95,7 @@ export default function AccountPage() {
       </Link>
 
       <header className={styles.head}>
-        <p className={styles.eyebrow}>观象 · 账户</p>
+        <p className={styles.eyebrow}>账户</p>
         <h1 className={styles.title}>我 的</h1>
       </header>
 

@@ -10,7 +10,7 @@ import styles from './OrbitStage.module.css';
 
 const ENTRIES = [
   { href: '/liuyao', name: '六爻', sub: '三枚铜钱，六摇成卦', key: 'liuyao' },
-  { href: '/tarot', name: '塔罗', sub: '七十八张，观象取意', key: 'tarot' },
+  { href: '/tarot', name: '塔罗', sub: '七十八张，取象会意', key: 'tarot' },
   { href: '/ziwei', name: '紫微', sub: '十二宫位，星曜布列', key: 'ziwei' },
   { href: '/daliuren', name: '六壬', sub: '天地盘立，四课三传', key: 'daliuren' },
   { href: '/almanac', name: '黄历', sub: '宜忌神煞，日辰吉凶', key: 'almanac' },
@@ -129,9 +129,7 @@ export default function OrbitStage() {
                 <DivinationGlyph name={current.key} size={88} />
                 <span className={styles.srOnly}>{current.name}</span>
               </span>
-            ) : (
-              <h1 className={styles.coreTitle}>观象</h1>
-            )}
+            ) : null}
           </div>
         </div>
 
