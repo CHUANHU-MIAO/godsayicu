@@ -114,6 +114,11 @@
   opacity: 0.38;
 }
 
+.discNode {
+  fill: var(--c-gold);
+  opacity: 0.5;
+}
+
 .core {
   position: absolute;
   left: 50%;

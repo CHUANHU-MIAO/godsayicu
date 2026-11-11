@@ -42,24 +42,49 @@ const GUA = [
 
 const TICKS = Array.from({ length: 24 }, (_, i) => i * 15);
 
-/** 罗盘：多层同心环、二十四山向刻度与八卦环带，中心留空承托太极 */
+const OCT_CORNERS = Array.from({ length: 8 }, (_, i) => -90 + i * 45);
+
+/** 以 (150,150) 为心、半径 r 的正八边形顶点串，自正上方起每 45° 取一点 */
+function octagon(r: number): string {
+  return OCT_CORNERS.map((deg) => {
+    const rad = (deg * Math.PI) / 180;
+    return `${(150 + r * Math.cos(rad)).toFixed(1)},${(150 + r * Math.sin(rad)).toFixed(1)}`;
+  }).join(' ');
+}
+
+const OCT_OUTER = octagon(141);
+const OCT_INNER = octagon(133);
+
+/** 八角罗盘：正八边形双层边框、八角节点、二十四山刻度与八卦爻线环带，中心留空承托太极 */
 function CompassDisc() {
   return (
     <svg viewBox="0 0 300 300" className={styles.disc} aria-hidden="true">
-      <circle cx="150" cy="150" r="141" className={styles.discOuter} />
-      <circle cx="150" cy="150" r="133" className={styles.discHair} />
-      <circle cx="150" cy="150" r="122" className={styles.discRing} />
-      <circle cx="150" cy="150" r="110" className={styles.discDashed} />
-      <circle cx="150" cy="150" r="96" className={styles.discHair} />
-      <circle cx="150" cy="150" r="82" className={styles.discRing} />
+      <polygon points={OCT_OUTER} className={styles.discOuter} />
+      <polygon points={OCT_INNER} className={styles.discHair} />
+
+      {OCT_CORNERS.map((deg) => {
+        const rad = (deg * Math.PI) / 180;
+        return (
+          <circle
+            key={deg}
+            cx={150 + 135 * Math.cos(rad)}
+            cy={150 + 135 * Math.sin(rad)}
+            r="1.7"
+            className={styles.discNode}
+          />
+        );
+      })}
+
+      <circle cx="150" cy="150" r="112" className={styles.discRing} />
+      <circle cx="150" cy="150" r="104" className={styles.discDashed} />
 
       {TICKS.map((deg) => (
         <line
           key={deg}
           x1="150"
-          y1="12"
+          y1="22"
           x2="150"
-          y2={deg % 90 === 0 ? '30' : deg % 45 === 0 ? '24' : '19'}
+          y2={deg % 90 === 0 ? '34' : deg % 45 === 0 ? '30' : '27'}
           className={deg % 90 === 0 ? styles.discCardinal : styles.discTick}
           transform={`rotate(${deg} 150 150)`}
         />
@@ -68,8 +93,8 @@ function CompassDisc() {
       {GUA.map((lines, index) => (
         <g key={index} transform={`rotate(${index * 45} 150 150)`}>
           {lines.map((solid, row) => {
-            // 环带半径 104：中心 150 - 104 = 46，三条爻线自 y=46 起向下排列
-            const y = 46 + row * 6;
+            // 环带半径 98：中心 150 - 98 = 52，三条爻线自 y=52 起向下排列
+            const y = 52 + row * 6;
             return solid ? (
               <line key={row} x1="139" y1={y} x2="161" y2={y} className={styles.discYao} />
             ) : (
@@ -81,6 +106,8 @@ function CompassDisc() {
           })}
         </g>
       ))}
+
+      <circle cx="150" cy="150" r="80" className={styles.discRing} />
     </svg>
   );
 }
