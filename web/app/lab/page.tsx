@@ -303,6 +303,7 @@ export default function LabPage() {
         <div className={styles.footerLinks}>
           <Link href="/">返回首页</Link>
           <Link href="/history">查看问事录</Link>
+          <Link href="/lab/look">新版式样板 →</Link>
         </div>
       </footer>
     </main>

@@ -371,3 +371,99 @@ h6 {
   letter-spacing: 0.2em;
   color: var(--c-text-3);
 }
+
+/* ============================================================
+   新版式设计层 --ds-*（结构参数，自行实现，不依赖任何 CSS 框架）
+   只借用「发丝线 / 环+投影 / 圆角刻度 / 密度节奏 / 字阶」这类
+   与工具无关的结构规范；底色与强调色仍取本站 --c-* 主题变量，
+   因此与首页、六爻的朱玄 / 月纸配色保持一致。
+   ============================================================ */
+
+:root,
+:root[data-appearance='dark'] {
+  --ds-hairline: 0.5px;
+  --ds-line: rgba(255, 255, 255, 0.1);
+  --ds-line-hover: rgba(255, 255, 255, 0.2);
+  --ds-line-strong: rgba(255, 255, 255, 0.18);
+  --ds-fill-field: rgba(255, 255, 255, 0.05);
+  --ds-fill-hover: rgba(255, 255, 255, 0.075);
+  --ds-fill-selected: rgba(255, 255, 255, 0.12);
+
+  /* 浅色外描 1px、深色内描 1px：暗色卡片不发糊的关键 */
+  --ds-ring-outer: 0px;
+  --ds-ring-inner: 1px;
+  --ds-shadow-color: rgba(0, 0, 0, 0.24);
+  --ds-shadow-panel:
+    inset 0 0 0 var(--ds-ring-inner) var(--ds-line),
+    0 0 0 var(--ds-ring-outer) var(--ds-line),
+    0 1px 2px 0 rgba(0, 0, 0, 0.12),
+    0 2px 8px 0 var(--ds-shadow-color);
+  --ds-shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.32), 0 2px 6px rgba(0, 0, 0, 0.2);
+  --ds-shadow-thumb:
+    inset 0 0 0 1px var(--ds-line),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  --ds-focus-ring: 0 0 0 2px var(--c-bg), 0 0 0 3px var(--c-gold);
+
+  /* 圆角刻度：控件 6 / 行 8 / 卡片 14 / 输入框 10 */
+  --ds-r-control: 6px;
+  --ds-r-row: 8px;
+  --ds-r-card: 14px;
+  --ds-r-field: 10px;
+
+  /* 密度：控件与行 32px，gap 8/12/16/20/28，内边距 16/24 */
+  --ds-control-h: 32px;
+  --ds-row-h: 32px;
+  --ds-gap-1: 8px;
+  --ds-gap-2: 12px;
+  --ds-gap-3: 16px;
+  --ds-gap-4: 20px;
+  --ds-gap-5: 28px;
+  --ds-pad-3: 16px;
+  --ds-pad-4: 24px;
+
+  /* 字阶：13px 分区标题 / 14px 正文 / 20px 行高 */
+  --ds-fs-caption: 0.6875rem;
+  --ds-fs-footnote: 0.8125rem;
+  --ds-fs-body: 0.875rem;
+  --ds-fs-heading: 0.9375rem;
+  --ds-fs-title: 1.5rem;
+  --ds-fs-display: 2rem;
+  --ds-lh-body: 1.45;
+  --ds-lh-prose: 1.6;
+
+  /* 动效 */
+  --ds-dur-fast: 60ms;
+  --ds-dur-snap: 120ms;
+  --ds-dur-base: 200ms;
+  --ds-dur-slow: 450ms;
+  --ds-ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ds-ease-snap: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* 页面宽度：输入窄栏 / 结果宽栏 */
+  --ds-page-narrow: 608px;
+  --ds-page-wide: 1024px;
+  --ds-stagger: 40ms;
+}
+
+:root[data-appearance='light'] {
+  --ds-line: rgba(34, 26, 23, 0.1);
+  --ds-line-hover: rgba(34, 26, 23, 0.2);
+  --ds-line-strong: rgba(34, 26, 23, 0.18);
+  --ds-fill-field: rgba(34, 26, 23, 0.05);
+  --ds-fill-hover: rgba(34, 26, 23, 0.075);
+  --ds-fill-selected: rgba(34, 26, 23, 0.12);
+
+  --ds-ring-outer: 1px;
+  --ds-ring-inner: 0px;
+  --ds-shadow-color: rgba(90, 60, 45, 0.08);
+  --ds-shadow-panel:
+    inset 0 0 0 var(--ds-ring-inner) var(--ds-line),
+    0 0 0 var(--ds-ring-outer) var(--ds-line),
+    0 1px 2px 0 rgba(90, 60, 45, 0.06),
+    0 2px 8px 0 var(--ds-shadow-color);
+  --ds-shadow-pop: 0 8px 24px rgba(90, 60, 45, 0.12), 0 2px 6px rgba(90, 60, 45, 0.08);
+  --ds-shadow-thumb:
+    inset 0 0 0 1px var(--ds-line),
+    0 1px 2px rgba(90, 60, 45, 0.1);
+  --ds-focus-ring: 0 0 0 2px var(--c-bg), 0 0 0 3px var(--c-gold);
+}
