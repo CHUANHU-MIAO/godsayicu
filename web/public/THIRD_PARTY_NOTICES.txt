@@ -1,0 +1,66 @@
+观象 · 问天 — 第三方开源许可声明
+========================================
+
+本项目为自研前端与自研薄后端，排盘计算通过 npm 依赖 taibu-core 完成。
+上游开源项目：太卜 / taibu
+开源地址：https://github.com/hhszzzz/taibu
+
+一、许可边界说明
+----------------------------------------
+上游仓库采用混合许可证：
+
+  * packages/core、packages/mcp、packages/mcp-server 为 MIT License；
+  * 其余 src/、database/、public/、scripts/、Dockerfile、deploy/ 等
+    Web、服务端、部署与运行时代码为 AGPL-3.0-only。
+
+本项目仅通过 npm 依赖并使用 MIT 许可的 taibu-core（排盘计算引擎），
+未使用、未复制、未修改上游仓库中任何 AGPL-3.0-only 的代码、SQL、
+配置或部署文件。本项目的页面、组件、样式、图标与服务端适配层均为原创。
+
+上游完整许可文本见其仓库根目录 LICENSE 与 LICENSE-AGPL-3.0.txt。
+
+二、taibu-core（MIT）
+----------------------------------------
+包名：taibu-core
+版本：4.0.0
+版权：Copyright (c) 2026 hhszzzz
+许可：MIT License
+来源：https://github.com/hhszzzz/taibu/tree/master/packages/core
+
+MIT License
+
+Copyright (c) 2026 hhszzzz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+SPDX-License-Identifier: MIT
+
+三、其他依赖
+----------------------------------------
+本项目及 taibu-core 的传递依赖（Next.js、React、iztro、lunar-javascript
+等）各自适用其随包分发的许可证，详见对应 npm 包内的 LICENSE 文件。
+本项目本地托管的字体（霞鹜文楷、Noto Sans SC、Noto Serif SC、
+Cormorant Garamond）依其各自的 SIL Open Font License / Apache License 使用。
+
+四、说明
+----------------------------------------
+若日后引入上游 AGPL-3.0-only 部分并与本项目合并为一个作品对外提供
+网络服务，则整体作品须按 AGPL-3.0 授权，并依其第 13 条向所有网络用户
+免费提供该版本完整对应源码（Corresponding Source），且需显著提供获取入口。
+届时本声明须同步更新。

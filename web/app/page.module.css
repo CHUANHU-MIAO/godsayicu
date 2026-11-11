@@ -63,6 +63,26 @@
   color: var(--c-text-3);
 }
 
+.credit {
+  margin: 10px 0 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--c-text-3);
+  opacity: 0.85;
+}
+
+.credit a {
+  color: var(--c-text-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 120ms ease;
+}
+
+.credit a:hover,
+.credit a:focus-visible {
+  color: var(--c-text-1);
+}
+
 @media (max-width: 900px) {
   .home {
     padding: 22px 22px 48px;

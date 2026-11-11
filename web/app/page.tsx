@@ -26,7 +26,23 @@ export default function Home() {
 
       <OrbitStage />
 
-      <footer className={styles.foot}>一念归静 · 万理昭明</footer>
+      <footer className={styles.foot}>
+        一念归静 · 万理昭明
+        <p className={styles.credit}>
+          排盘引擎{' '}
+          <a href="https://github.com/hhszzzz/taibu" target="_blank" rel="noopener noreferrer">
+            taibu-core
+          </a>{' '}
+          （MIT）· 开源项目{' '}
+          <a href="https://github.com/hhszzzz/taibu" target="_blank" rel="noopener noreferrer">
+            太卜
+          </a>
+          {' · '}
+          <a href="/THIRD_PARTY_NOTICES.txt" target="_blank" rel="noopener noreferrer">
+            开源许可声明
+          </a>
+        </p>
+      </footer>
     </main>
   );
 }
