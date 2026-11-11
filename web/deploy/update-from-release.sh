@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Server-side updater for ICU (public repository, no credentials needed).
-# Download the prebuilt standalone bundle from the GitHub Release,
-# unpack it, switch a symlink and restart PM2.
+# Server-side updater for ICU. No credentials needed.
+# Prefers a bundle uploaded to /opt/icu-standalone.tar.gz (fully offline),
+# otherwise downloads it from the public GitHub Release.
+# Unpacks, switches a symlink and restarts PM2.
 # This machine NEVER runs npm ci or next build.
 #
 # Usage:  bash update-from-release.sh
@@ -31,29 +32,30 @@ done
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
+LOCAL_BUNDLE="/opt/$ASSET"
 BUNDLE_URL="https://github.com/$OWNER/$REPO/releases/download/$TAG/$ASSET"
 BUNDLE="$WORK/bundle.tar.gz"
 
-echo '==> 1/6 download bundle'
-echo "$BUNDLE_URL"
-DOWNLOAD_OK=0
-for i in 1 2 3 4 5; do
-  echo "download attempt $i / 5"
-  if curl -fL --retry 3 --retry-delay 2 --retry-all-errors \
-      --connect-timeout 15 --max-time 300 \
-      "$BUNDLE_URL" -o "$BUNDLE"; then
-    if tar tzf "$BUNDLE" >/dev/null 2>&1; then
-      DOWNLOAD_OK=1
+echo '==> 1/6 get bundle'
+if [ -f "$LOCAL_BUNDLE" ]; then
+  echo "using local bundle (offline): $LOCAL_BUNDLE"
+  cp "$LOCAL_BUNDLE" "$BUNDLE"
+else
+  echo "downloading: $BUNDLE_URL"
+  for i in 1 2 3 4 5; do
+    echo "download attempt $i / 5"
+    if curl -fL --retry 3 --retry-delay 2 --retry-all-errors \
+        --connect-timeout 15 --max-time 300 \
+        "$BUNDLE_URL" -o "$BUNDLE"; then
       break
     fi
-    echo 'archive incomplete, retrying'
-  fi
-  rm -f "$BUNDLE"
-  sleep 3
-done
-if [ "$DOWNLOAD_OK" != '1' ]; then
-  echo 'ERROR: bundle download failed after 5 attempts'
-  echo 'HINT: this server may not reach the GitHub release CDN'
+    rm -f "$BUNDLE"
+    sleep 3
+  done
+fi
+if ! tar tzf "$BUNDLE" >/dev/null 2>&1; then
+  echo 'ERROR: bundle missing or corrupt'
+  echo "HINT: upload $ASSET to /opt/ on this server and rerun"
   exit 1
 fi
 
