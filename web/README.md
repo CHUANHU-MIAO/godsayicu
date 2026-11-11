@@ -96,6 +96,36 @@ Nginx 反代 3000，并对 `/api/ai/interpret` 关闭 `proxy_buffering`（SSE �
 
 **上线前必须在 Linux 上真实跑一次 `npm run build`**，Windows 通过不代表 Linux 通过（文件系统大小写敏感、行尾 LF、路径分隔符）。
 
+### CI 构建 + 服务器零构建更新（推荐）
+
+云盘 IOPS 有限时，不要在服务器上跑 `npm ci` / `npm run build`（几万个小文件读写会打满 IOPS，整机连带卡顿）。改为在 GitHub Actions 的 `ubuntu-latest` 上构建，服务器只下载解压产物并跑 `node server.js`。
+
+- `.github/workflows/build-standalone.yml`：push `main`（或手动触发）→ Node 22 → `npm ci` → `npm run build` → 补齐 `public/` 与 `.next/static/` → 打成单个 `icu-standalone.tar.gz` → 发布到固定 tag `standalone-latest` 的 Release（每次覆盖），同时上传保留 7 天的 artifact 备用。
+- `web/deploy/update-from-release.sh`：服务器端更新脚本。带 PAT 从 Release 下载 → 解压到 `/opt/icu-app/releases/<sha12>` → 原子切换 `/opt/icu-app/current` 软链 → 重建 PM2 配置并重启 `icu` → 自检 HTTP 200；**失败自动回滚到上一版**，默认保留最近 3 个版本。
+
+服务器首次使用（逐条单独执行，纯 ASCII）：
+
+```bash
+export GH_TOKEN=ghp_xxx
+```
+
+```bash
+git -C /opt/godsayicu pull --ff-only https://x-access-token:${GH_TOKEN}@github.com/CHUANHU-MIAO/godsayicu.git main
+```
+
+```bash
+bash /opt/godsayicu/web/deploy/update-from-release.sh
+```
+
+以后把 `GH_TOKEN=...` 写入 `/etc/icu.env`（`chmod 600`），更新只需最后一条。手动回滚：
+
+```bash
+ln -sfn /opt/icu-app/releases/<older-sha> /opt/icu-app/current
+pm2 restart icu --update-env
+```
+
+**约束**：产物必须由 Linux 构建，Windows `build:win` 产物不保证能在 Ubuntu 运行；私有仓库的 Release 附件需要 `repo` 权限的 PAT。切换后 PM2 的 script 指向 `/opt/icu-app/current/server.js`，与旧的 `/opt/godsayicu/web/.next/standalone/server.js` 不同，确认新服务 HTTP 200 后再清理旧目录。
+
 ## 跨平台硬约束
 
 - 路径一律 `path.join()`，禁止硬编码 `\` 或 `C:\`
