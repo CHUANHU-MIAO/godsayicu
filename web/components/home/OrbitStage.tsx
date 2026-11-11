@@ -42,21 +42,25 @@ const GUA = [
 
 const TICKS = Array.from({ length: 24 }, (_, i) => i * 15);
 
-function ObservingDisc() {
+/** 罗盘：多层同心环、二十四山向刻度与八卦环带，中心留空承托太极 */
+function CompassDisc() {
   return (
     <svg viewBox="0 0 300 300" className={styles.disc} aria-hidden="true">
       <circle cx="150" cy="150" r="141" className={styles.discOuter} />
-      <circle cx="150" cy="150" r="126" className={styles.discRing} />
+      <circle cx="150" cy="150" r="133" className={styles.discHair} />
+      <circle cx="150" cy="150" r="122" className={styles.discRing} />
+      <circle cx="150" cy="150" r="110" className={styles.discDashed} />
+      <circle cx="150" cy="150" r="96" className={styles.discHair} />
       <circle cx="150" cy="150" r="82" className={styles.discRing} />
 
       {TICKS.map((deg) => (
         <line
           key={deg}
           x1="150"
-          y1="9"
+          y1="12"
           x2="150"
-          y2={deg % 45 === 0 ? '21' : '16'}
-          className={styles.discTick}
+          y2={deg % 90 === 0 ? '30' : deg % 45 === 0 ? '24' : '19'}
+          className={deg % 90 === 0 ? styles.discCardinal : styles.discTick}
           transform={`rotate(${deg} 150 150)`}
         />
       ))}
@@ -77,9 +81,30 @@ function ObservingDisc() {
           })}
         </g>
       ))}
+    </svg>
+  );
+}
 
-      <circle cx="150" cy="150" r="66" className={styles.discCore} />
-      <circle cx="150" cy="150" r="58" className={styles.discCoreInner} />
+/** 太极阴阳：墨 / 月白两色由主题变量提供，亮暗模式下都不反转 */
+function TaijiSymbol() {
+  return (
+    <svg viewBox="0 0 200 200" className={`${styles.taiji} motion-heavy`} aria-hidden="true">
+      <circle cx="100" cy="100" r="96" fill="var(--c-taiji-yang)" />
+      <path d="M100 4 A96 96 0 0 1 100 196 Z" fill="var(--c-taiji-yin)" />
+      <circle cx="100" cy="148" r="48" fill="var(--c-taiji-yang)" />
+      <circle cx="100" cy="52" r="48" fill="var(--c-taiji-yin)" />
+      <circle cx="100" cy="52" r="13" fill="var(--c-taiji-yang)" />
+      <circle cx="100" cy="148" r="13" fill="var(--c-taiji-yin)" />
+      <circle cx="100" cy="100" r="96" fill="none" stroke="var(--c-taiji-edge)" strokeWidth="1.6" />
+      <circle
+        cx="100"
+        cy="100"
+        r="99"
+        fill="none"
+        stroke="var(--c-taiji-edge)"
+        strokeWidth="0.7"
+        opacity="0.45"
+      />
     </svg>
   );
 }
@@ -121,7 +146,7 @@ export default function OrbitStage() {
       <div className={styles.orbit}>
         <div className={styles.discWrap}>
           <div className={`${styles.discSpin} motion-heavy`}>
-            <ObservingDisc />
+            <CompassDisc />
           </div>
           <div className={styles.core} aria-live="polite">
             {current ? (
@@ -129,7 +154,11 @@ export default function OrbitStage() {
                 <DivinationGlyph name={current.key} size={88} />
                 <span className={styles.srOnly}>{current.name}</span>
               </span>
-            ) : null}
+            ) : (
+              <span className={styles.coreTaiji}>
+                <TaijiSymbol />
+              </span>
+            )}
           </div>
         </div>
 

@@ -57,6 +57,7 @@
 .discSpin {
   width: 100%;
   height: 100%;
+  opacity: 0.62;
 }
 
 .disc {
@@ -68,39 +69,49 @@
 .discOuter {
   fill: none;
   stroke: var(--c-line-2);
-  stroke-width: 1;
+  stroke-width: 0.9;
+}
+
+.discHair {
+  fill: none;
+  stroke: var(--c-line);
+  stroke-width: 0.7;
+  opacity: 0.75;
 }
 
 .discRing {
   fill: none;
-  stroke: var(--c-line);
-  stroke-width: 1;
+  stroke: var(--c-line-2);
+  stroke-width: 0.9;
+  opacity: 0.85;
+}
+
+.discDashed {
+  fill: none;
+  stroke: var(--c-line-2);
+  stroke-width: 0.8;
+  stroke-dasharray: 2 6;
+  opacity: 0.6;
 }
 
 .discTick {
   stroke: var(--c-line-2);
-  stroke-width: 1;
-  opacity: 0.8;
+  stroke-width: 0.9;
+  opacity: 0.7;
+}
+
+.discCardinal {
+  stroke: var(--c-gold);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0.75;
 }
 
 .discYao {
   stroke: var(--c-gold);
-  stroke-width: 2.2;
+  stroke-width: 1.8;
   stroke-linecap: round;
-  opacity: 0.72;
-}
-
-.discCore {
-  fill: var(--c-surface);
-  stroke: var(--c-line-2);
-  stroke-width: 1;
-}
-
-.discCoreInner {
-  fill: none;
-  stroke: var(--c-gold);
-  stroke-width: 1;
-  opacity: 0.35;
+  opacity: 0.38;
 }
 
 .core {
@@ -124,6 +135,37 @@
 
 .coreGlyph svg {
   display: block;
+}
+
+.coreTaiji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  filter: drop-shadow(0 0 18px rgba(var(--c-accent-rgb), 0.24));
+  animation: taijiIn 0.6s ease both;
+}
+
+.taiji {
+  display: block;
+  width: 148px;
+  height: 148px;
+  transform-origin: center center;
+}
+
+/* 罗盘顺时针、太极逆时针：同为 140s，仅在 full 动效档启用 */
+:root[data-motion='full'] .taiji {
+  animation: taijiSpin 140s linear infinite;
+}
+
+@keyframes taijiIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes taijiSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
 }
 
 .srOnly {

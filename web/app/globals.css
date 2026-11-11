@@ -76,6 +76,11 @@
   --c-glow: rgba(224, 104, 79, 0.1);
   --c-glow-soft: rgba(159, 184, 174, 0.06);
 
+  /* 太极阴阳：两套主题下固定「墨 / 月白」，不随亮暗反转 */
+  --c-taiji-yin: #100c0e;
+  --c-taiji-yang: #f3e9e0;
+  --c-taiji-edge: rgba(224, 104, 79, 0.5);
+
   /* 语义色：组件只引用这些变量，亮暗切换时不会残留深色块 */
   --c-active-bg: rgba(224, 104, 79, 0.16);
   --c-idle-line: #4a403a;
@@ -121,6 +126,10 @@
   --c-jade-rgb: 63, 111, 99;
   --c-glow: rgba(178, 63, 40, 0.08);
   --c-glow-soft: rgba(63, 111, 99, 0.05);
+
+  --c-taiji-yin: #2b201c;
+  --c-taiji-yang: #fffdf8;
+  --c-taiji-edge: rgba(178, 63, 40, 0.45);
 
   --c-active-bg: rgba(178, 63, 40, 0.1);
   --c-idle-line: #cdbcad;

@@ -19,6 +19,7 @@ build/
 # 本地调试产物
 .screenshots/
 .workbuddy/
+logs/
 
 # 第三方源码：taibu 上游为 AGPL-3.0-only，仅本地对照研究，绝不入库
 taibu-master/
