@@ -1,0 +1,75 @@
+/* 八枚小篆垫在舞台之外的最底层，只做气氛，不接任何指针事件 */
+
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 定位层：只负责 left/top/width/height/opacity 的补间 */
+.slot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: left, top, width, height;
+}
+
+/* 首帧落位后再开启过渡，否则会看到八字从原点滑出来 */
+.animated {
+  transition:
+    left 1.05s cubic-bezier(0.32, 0.72, 0, 1),
+    top 1.05s cubic-bezier(0.32, 0.72, 0, 1),
+    width 1.05s cubic-bezier(0.32, 0.72, 0, 1),
+    height 1.05s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 1.05s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* 字形层：字号单独过渡，入场淡入也挂在这里，避免和定位层的 opacity 打架 */
+.glyph {
+  display: block;
+  font-family: 'SealZi', 'Noto Serif SC', serif;
+  font-weight: 400;
+  line-height: 1;
+  color: #efe3d2;
+  text-shadow: 0 0 22px rgba(0, 0, 0, 0.6);
+  transition: font-size 1.05s cubic-bezier(0.32, 0.72, 0, 1);
+  animation: ziIn 1.8s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+
+:global(:root[data-appearance='light']) .glyph {
+  color: #3b2a22;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.65);
+}
+
+@keyframes ziIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated,
+  .glyph {
+    transition-duration: 0.01ms;
+  }
+
+  .glyph {
+    animation-duration: 0.01ms;
+    animation-delay: 0ms !important;
+  }
+}
+
+/* 性能档为 off 时不留任何过渡 */
+:global(:root[data-motion='off']) .animated,
+:global(:root[data-motion='off']) .glyph {
+  transition-duration: 0.01ms;
+  animation-duration: 0.01ms;
+}

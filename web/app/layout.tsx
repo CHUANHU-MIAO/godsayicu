@@ -19,6 +19,8 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
+        {/* 崇羲篆體（說文小篆）子集：只含首页背景八个字，OFL-1.1 */}
+        <link rel="stylesheet" href="/fonts/seal.css" />
       </head>
       <body>
         <MotionGovernor />

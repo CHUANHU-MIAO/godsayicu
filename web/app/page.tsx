@@ -8,6 +8,9 @@ export default function Home() {
     <main className={styles.home}>
       <div className={styles.atmosphere} aria-hidden="true" />
 
+      {/* 舞台本身没有可读标题，给读屏与搜索引擎留一个 */}
+      <h1 className="sr-only">一念归静 · 万理昭明 —— 中文术数文化学习平台</h1>
+
       <nav className={styles.topbar} aria-label="快捷入口">
         <Link href="/history" className={styles.accountLink}>
           记 录

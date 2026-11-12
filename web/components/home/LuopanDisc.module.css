@@ -1,0 +1,24 @@
+/* 罗盘由 LuopanDisc.tsx 拼字符串注入，节点自带 class="ring"，
+   这里按元素直接上色，避免 CSS Module 的哈希跟注入内容对不上。 */
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* 盘面允许出血到屏幕外 */
+  overflow: visible;
+}
+
+.svg text {
+  fill: var(--lp-line);
+  font-weight: 400;
+}
+
+.svg circle,
+.svg line {
+  stroke: var(--lp-line);
+  fill: none;
+  stroke-linecap: round;
+}
+
+/* 六十四卦卦象的阴阳爻在生成时带了 stroke-width，这里不覆盖 */

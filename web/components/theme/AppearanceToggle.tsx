@@ -91,7 +91,7 @@ export default function AppearanceToggle() {
   const TriggerIcon = ICONS[state.resolved === 'light' ? 'light' : 'dark'];
 
   return (
-    <div className={styles.root} ref={rootRef}>
+    <div className={styles.root} ref={rootRef} data-appearance-toggle="">
       {open && (
         <div className={styles.panel} role="menu" aria-label="外观模式">
           <p className={styles.panelHead}>外 观</p>
